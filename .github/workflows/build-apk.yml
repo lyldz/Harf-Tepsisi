@@ -3,59 +3,70 @@ name: Build Android APK
 on:
   push:
     branches: [ main, master ]
+    tags:
+      - 'v*'
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
-    name: Build APK
+    name: Build & Release APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Check out repository
         uses: actions/checkout@v4
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
+          distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.6'
 
-      - name: Copy Web Assets to Android Project
+      - name: Copy web assets to Android
         run: |
           mkdir -p android/app/src/main/assets
           cp index.html android/app/src/main/assets/
           cp manifest.json android/app/src/main/assets/
           cp sw.js android/app/src/main/assets/
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
-
-      - name: Build APK with Gradle
+      - name: Build Android APK
+        working-directory: android
         run: |
-          cd android
-          gradle wrapper --gradle-version 8.6
-          chmod +x gradlew
-          ./gradlew assembleDebug
+          gradle assembleDebug --stacktrace
 
-      - name: Rename and Prepare APK
+      - name: Prepare APK Artifact
         run: |
-          mkdir -p output
-          cp android/app/build/outputs/apk/debug/app-debug.apk output/HarfTepsisi-OmerAsaf.apk
+          mkdir -p build-output
+          TAG="${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'v1.0.0' }}"
+          find android/app/build/outputs/apk/ -name "*.apk" -exec cp {} build-output/HarfTepsisi-OmerAsaf-${TAG}.apk \;
+          find android/app/build/outputs/apk/ -name "*.apk" -exec cp {} build-output/HarfTepsisi-OmerAsaf.apk \;
+          ls -lh build-output/
 
-      - name: Upload APK Artifact
+      - name: Upload APK as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: HarfTepsisi-OmerAsaf
-          path: output/HarfTepsisi-OmerAsaf.apk
-          retention-days: 30
+          name: HarfTepsisi-OmerAsaf-APK
+          path: build-output/*.apk
 
-      - name: Create GitHub Release (Optional on tag/push)
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Create or Update GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: output/HarfTepsisi-OmerAsaf.apk
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'v1.0.0' }}
+          files: build-output/*.apk
+          name: "Harf Tepsisi ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'v1.0.0' }}"
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          body: |
+            ## 🧺 Harf Tepsisi - Ömer Asaf Okuma Arkadaşı
+            - **Ses Grubu:** 2024 MEB ANETİL (`a, n, e, t, i, l`)
+            - **Paket:** `com.omerasaf.harftepsisi`
+            - **Kurulum:** Aşağıdaki `HarfTepsisi-OmerAsaf.apk` dosyasını Android cihazınıza indirip doğrudan kurabilirsiniz.

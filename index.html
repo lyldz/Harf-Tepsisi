@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0284c7">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Harf Tepsisi - Ömer Asaf için Okuma Arkadaşı</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    :root {
+      --bg-gradient-start: #e0f2fe;
+      --bg-gradient-end: #fef3c7;
+      --tray-bg: #fef08a;
+      --tray-border: #f59e0b;
+      --card-bg: #ffffff;
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --success: #16a34a;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.07);
+      --shadow-lg: 0 14px 28px -4px rgba(0,0,0,0.12), 0 10px 10px -5px rgba(0,0,0,0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      font-family: 'Comic Sans MS', 'Fredoka', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 'Nunito', sans-serif;
+      background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Header Bar */
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      border-bottom: 2px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      font-size: 28px;
+      animation: bounce 2s infinite ease-in-out;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .brand-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: #0284c7;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+    }
+
+    .brand-subtitle {
+      font-size: 13px;
+      font-weight: 800;
+      color: #f59e0b;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .stats-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stat-pill {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      padding: 6px 12px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 800;
+      font-size: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-pill.stars {
+      background: #fefce8;
+      border-color: #fde047;
+      color: #b45309;
+    }
+
+    .stat-pill.retry {
+      background: #fff1f2;
+      border-color: #fecdd3;
+      color: #be123c;
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      max-width: 680px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 14px 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Mode & Settings Bar */
+    .control-ribbon {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .mode-tabs {
+      display: flex;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 4px;
+      border-radius: 999px;
+      border: 1.5px solid #cbd5e1;
+    }
+
+    .mode-tab {
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mode-tab.active {
+      background: #0284c7;
+      color: white;
+      box-shadow: 0 2px 4px rgba(2, 132, 199, 0.3);
+    }
+
+    .btn-secondary {
+      background: white;
+      border: 1.5px solid #cbd5e1;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #334155;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.1s ease;
+    }
+
+    .btn-secondary:active {
+      transform: scale(0.96);
+    }
+
+    /* Letter Tray (Harf Tepsisi) */
+    .tray-card {
+      background: #fffbeb;
+      border: 3px dashed #f59e0b;
+      border-radius: 18px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      box-shadow: 0 3px 6px rgba(245, 158, 11, 0.15);
+    }
+
+    .tray-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .tray-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: #b45309;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .tray-tiles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .letter-tile {
+      width: 32px;
+      height: 34px;
+      background: #ffffff;
+      border: 2px solid #fbbf24;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 900;
+      color: #b45309;
+      box-shadow: 0 2px 0 #d97706;
+      transition: transform 0.15s ease;
+    }
+
+    .letter-tile.highlight {
+      background: #dbeafe;
+      border-color: #3b82f6;
+      color: #1d4ed8;
+      box-shadow: 0 2px 0 #1e40af;
+      animation: pulse 1.5s infinite alternate;
+    }
+
+    /* Timer Section */
+    .timer-wrap {
+      background: white;
+      border-radius: 16px;
+      padding: 10px 16px;
+      border: 2px solid #e2e8f0;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .timer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 700;
+      color: #475569;
+    }
+
+    .timer-clock {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 18px;
+      font-weight: 900;
+      color: #0284c7;
+    }
+
+    .timer-clock.urgent {
+      color: #ef4444;
+      animation: pulse 0.6s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.1); }
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 12px;
+      background: #f1f5f9;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid #cbd5e1;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, #22c55e, #eab308, #ef4444);
+      background-size: 200% 100%;
+      border-radius: 999px;
+      transition: width 0.1s linear;
+    }
+
+    /* Centered Reading Card */
+    .reading-stage {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 250px;
+    }
+
+    .word-card {
+      width: 100%;
+      background: white;
+      border-radius: 28px;
+      border: 4px solid #38bdf8;
+      box-shadow: var(--shadow-lg);
+      padding: 32px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      overflow: hidden;
+    }
+
+    .word-card:active {
+      transform: scale(0.98);
+      border-color: #0284c7;
+    }
+
+    .word-card.shake {
+      animation: shake 0.5s ease-in-out;
+      border-color: #f87171;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 14px;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 999px;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-pyramid {
+      left: 16px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .badge-retry {
+      right: 16px;
+      background: #fff1f2;
+      color: #be123c;
+      border: 1px solid #fecdd3;
+    }
+
+    .badge-new-letter {
+      background: #f0fdf4;
+      color: #166534;
+      border: 1.5px solid #bbf7d0;
+      margin-bottom: 6px;
+      font-size: 13px;
+      padding: 3px 12px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 800;
+    }
+
+    /* Giant Word Display */
+    .word-text {
+      font-size: 58px;
+      font-weight: 900;
+      color: #0f172a;
+      text-align: center;
+      line-height: 1.25;
+      letter-spacing: 1.5px;
+      margin: 14px 0;
+      word-break: break-word;
+      transition: font-size 0.2s ease;
+    }
+
+    @media (min-width: 480px) {
+      .word-text {
+        font-size: 72px;
+      }
+    }
+
+    .word-text.sentence {
+      font-size: 34px;
+      line-height: 1.4;
+    }
+
+    @media (min-width: 480px) {
+      .word-text.sentence {
+        font-size: 44px;
+      }
+    }
+
+    .syllable-colored span:nth-child(odd) {
+      color: #0284c7;
+    }
+    .syllable-colored span:nth-child(even) {
+      color: #e11d48;
+    }
+
+    .tap-hint {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #64748b;
+      margin-top: 6px;
+    }
+
+    /* Helper Utilities Toolbar */
+    .helpers-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+
+    .helper-chip {
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #475569;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .helper-chip.active {
+      background: #dbeafe;
+      border-color: #3b82f6;
+      color: #1d4ed8;
+    }
+
+    /* Giant Primary Action Button */
+    .action-row {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .btn-read {
+      flex: 1;
+      background: linear-gradient(180deg, #22c55e, #16a34a);
+      border: none;
+      color: white;
+      font-size: 22px;
+      font-weight: 900;
+      padding: 16px 20px;
+      border-radius: 20px;
+      box-shadow: 0 6px 0 #15803d, 0 10px 20px rgba(22, 163, 74, 0.3);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+
+    .btn-read:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #15803d, 0 4px 10px rgba(22, 163, 74, 0.2);
+    }
+
+    .btn-audio {
+      width: 64px;
+      height: 64px;
+      background: #f1f5f9;
+      border: 2px solid #cbd5e1;
+      border-radius: 20px;
+      font-size: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.1s ease;
+    }
+
+    .btn-audio:active {
+      transform: scale(0.94);
+    }
+
+    /* Celebration & Modal Dialogs */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-card {
+      background: white;
+      border-radius: 24px;
+      max-width: 480px;
+      width: 100%;
+      padding: 24px;
+      box-shadow: var(--shadow-lg);
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 3px solid #38bdf8;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: #0369a1;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-desc {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 16px;
+    }
+
+    /* Alphabet Grid inside modal */
+    .letters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .letter-toggle-btn {
+      aspect-ratio: 1;
+      border-radius: 10px;
+      border: 2px solid #cbd5e1;
+      background: #f8fafc;
+      color: #64748b;
+      font-size: 20px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .letter-toggle-btn.active {
+      background: #fef08a;
+      border-color: #f59e0b;
+      color: #b45309;
+      box-shadow: 0 3px 0 #d97706;
+      transform: translateY(-2px);
+    }
+
+    /* Confetti Canvas */
+    #confettiCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 99;
+    }
+
+    /* Toast Notification */
+    .toast-popup {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #1e293b;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 800;
+      box-shadow: var(--shadow-lg);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 110;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toast-popup.visible {
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Top Header -->
+  <header>
+    <div class="brand-group">
+      <div class="brand-icon">🧺</div>
+      <div>
+        <div class="brand-title">Harf Tepsisi</div>
+        <div class="brand-subtitle">
+          <span>👦 Ömer Asaf</span>
+          <span>•</span>
+          <span id="headerLevel">1. Sınıf (2024 ANETİL)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-container">
+      <div class="stat-pill stars" title="Kazanılan Yıldızlar">
+        <span>⭐</span>
+        <span id="starCount">0</span>
+      </div>
+      <div class="stat-pill retry" id="retryPill" title="Tekrar Gelecek Kelimeler" style="display: none;">
+        <span>🔄</span>
+        <span id="retryCount">0</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Screen -->
+  <main>
+    <!-- Controls Ribbon -->
+    <div class="control-ribbon">
+      <div class="mode-tabs">
+        <button class="mode-tab active" id="tabWords" onclick="setAppMode('words')">Kelimeler</button>
+        <button class="mode-tab" id="tabPyramid" onclick="setAppMode('pyramid')">Hızlı Okuma (Piramit)</button>
+      </div>
+
+      <button class="btn-secondary" onclick="openSettingsModal()">
+        <span>⚙️</span>
+        <span>Tepsi & Ayar</span>
+      </button>
+    </div>
+
+    <!-- Letter Tray Display (Tepsideki Harfler: a, n, e, t, i, l) -->
+    <div class="tray-card">
+      <div class="tray-info">
+        <span class="tray-title">🧺 Tepsideki Harfler (Yeni: L):</span>
+        <div class="tray-tiles" id="activeTrayLetters">
+          <!-- Dynamically populated letters: A, N, E, T, İ, L -->
+        </div>
+      </div>
+      <button class="btn-secondary" style="border-color: #f59e0b; color: #b45309;" onclick="openLetterModal()">
+        <span>✏️ Harf Seç</span>
+      </button>
+    </div>
+
+    <!-- Countdown Timer -->
+    <div class="timer-wrap">
+      <div class="timer-header">
+        <span>⏱️ Okuma Sayacı:</span>
+        <div class="timer-clock" id="timerClock">
+          <span>⏳</span>
+          <span id="timerText">10</span>s
+        </div>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="timerProgressBar"></div>
+      </div>
+    </div>
+
+    <!-- Centered Card Stage -->
+    <div class="reading-stage">
+      <div class="word-card" id="wordCard" onclick="handleCardClick()">
+        <span class="card-badge badge-pyramid" id="pyramidBadge" style="display:none;">📖 Piramit Okuma</span>
+        <span class="card-badge badge-retry" id="cardRetryBadge" style="display:none;">Tekrar Sırasında</span>
+
+        <!-- New letter 'L' highlight badge -->
+        <div class="badge-new-letter" id="newLetterBadge" style="display:none;">
+          <span>🌱</span>
+          <span>Yeni Harf Pratiği: <strong>L</strong></span>
+        </div>
+
+        <!-- Giant Word Text -->
+        <div class="word-text" id="displayWord">Ela</div>
+
+        <div class="tap-hint">
+          <span>👆</span>
+          <span>Okuyunca tıkla veya butona bas!</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Word Formatting Helpers -->
+    <div class="helpers-bar">
+      <button class="helper-chip" id="btnCaseToggle" onclick="toggleCaseMode()">
+        <span id="caseIcon">Aa</span>
+        <span id="caseText">İlk Harf Büyük</span>
+      </button>
+      <button class="helper-chip" id="btnSyllableToggle" onclick="toggleSyllables()">
+        <span>🧩</span>
+        <span id="syllableText">Hecelere Ayır</span>
+      </button>
+      <button class="helper-chip" id="btnTimerToggle" onclick="toggleTimerSpeed()">
+        <span>⏲️</span>
+        <span id="timerSettingText">Süre: 10sn</span>
+      </button>
+    </div>
+
+    <!-- Primary Action Buttons -->
+    <div class="action-row">
+      <button class="btn-audio" onclick="speakCurrentWord(event)" title="Sesli Oku (Türkçe)">
+        🔊
+      </button>
+      <button class="btn-read" onclick="handleReadSuccess(event)">
+        <span>🎉 BİLDİM, OKUDUM!</span>
+        <span>⭐</span>
+      </button>
+    </div>
+  </main>
+
+  <!-- Letter Selection Modal -->
+  <div class="modal-overlay" id="letterModal">
+    <div class="modal-card">
+      <div class="modal-title">
+        <span>🧺</span>
+        <span>Harf Tepsisini Düzenle</span>
+      </div>
+      <p class="modal-desc">
+        Ömer Asaf'ın öğrendiği harfleri seçin. Seçtiğiniz harflerden anlamlı kelimeler otomatik oluşturulur.
+      </p>
+
+      <div class="letters-grid" id="alphabetGrid">
+        <!-- 29 Turkish letters generated via JS -->
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px;">
+        <button class="btn-secondary" onclick="resetToInitialLetters()">
+          🔄 Sıfırla (a, n, e, t, i, l)
+        </button>
+        <button class="btn-read" style="padding: 10px 20px; font-size: 16px;" onclick="closeModal('letterModal')">
+          Tamam 👍
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings & Speed Modal -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-card">
+      <div class="modal-title">
+        <span>⚙️</span>
+        <span>Uygulama Ayarları</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px; margin: 16px 0;">
+        <div>
+          <label style="font-weight: 800; font-size: 14px; display: block; margin-bottom: 6px;">⏱️ Sayaç Süresi:</label>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn-secondary" onclick="setTimerLimit(5)">5 saniye</button>
+            <button class="btn-secondary active" onclick="setTimerLimit(10)">10 saniye</button>
+            <button class="btn-secondary" onclick="setTimerLimit(15)">15 saniye</button>
+            <button class="btn-secondary" onclick="setTimerLimit(0)">Süresiz ♾️</button>
+          </div>
+        </div>
+
+        <div>
+          <label style="font-weight: 800; font-size: 14px; display: block; margin-bottom: 6px;">🔊 Ses Efektleri:</label>
+          <button class="btn-secondary" id="btnSoundToggle" onclick="toggleSound()">
+            <span>🔊 Sesler: Açık</span>
+          </button>
+        </div>
+
+        <div>
+          <label style="font-weight: 800; font-size: 14px; display: block; margin-bottom: 6px;">🌟 Yıldız Durumu:</label>
+          <div style="display:flex; justify-content: space-between; align-items:center;">
+            <span>Toplam Yıldız: <strong id="settingsStarCount">0</strong></span>
+            <button class="btn-secondary" style="color: #ef4444;" onclick="resetStars()">Sıfırla</button>
+          </div>
+        </div>
+
+        <div>
+          <label style="font-weight: 800; font-size: 14px; display: block; margin-bottom: 6px;">📲 Uygulama Yükleme (PWA):</label>
+          <button class="btn-secondary" id="btnInstallApp" onclick="triggerPwaInstall()" style="display:none;">
+            <span>📥 Ana Ekrana Ekle (Uygulama Olarak Yükle)</span>
+          </button>
+          <span style="font-size: 12px; color:#64748b;">Tarayıcı menüsünden "Uygulamayı Yükle" veya "Ana Ekrana Ekle" seçebilirsiniz.</span>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; margin-top: 14px;">
+        <button class="btn-read" style="padding: 10px 20px; font-size: 16px;" onclick="closeModal('settingsModal')">
+          Kapat 👍
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Element -->
+  <div class="toast-popup" id="toast">Tebrikler!</div>
+
+  <script>
+    /* =========================================================
+       HARF TEPSİSİ - ÖMER ASAF
+       Turkish Phonics Reading Practice App (2024 ANETİL)
+       Active letters: a, n, e, t, i, l
+       ========================================================= */
+
+    const TURKISH_ALPHABET = ['a', 'b', 'c', 'ç', 'd', 'e', 'f', 'g', 'ğ', 'h', 'ı', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'ö', 'p', 'r', 's', 'ş', 't', 'u', 'ü', 'v', 'y', 'z'];
+
+    let activeLetters = new Set(['a', 'n', 'e', 't', 'i', 'l']);
+
+    // Master Curated Word Database with Syllabification metadata
+    // All words from Seyit Ahmet Uzun 2024 'l' Sesi Hece - Kelime Tablosu + Worksheets
+    const MASTER_DICTIONARY = [
+      // === 'L' HARFİ İÇEREN TÜM KELİMELER (2024 ANETİL Tablosundan Tamamı) ===
+      // 1. Tablodaki 26 Kelime (Tam hecelemeleriyle):
+      { word: 'Ela', syllables: ['E', 'la'], desc: 'Ela (isim)', hasNewLetter: true },
+      { word: 'Ali', syllables: ['A', 'li'], desc: 'Ali (isim)', hasNewLetter: true },
+      { word: 'ala', syllables: ['a', 'la'], desc: 'ala (alacalı, güzel)', hasNewLetter: true },
+      { word: 'ile', syllables: ['i', 'le'], desc: 'ile (birlikte)', hasNewLetter: true },
+      { word: 'elli', syllables: ['el', 'li'], desc: 'elli (50 sayısı)', hasNewLetter: true },
+      { word: 'etli', syllables: ['et', 'li'], desc: 'etli (etli yemek)', hasNewLetter: true },
+      { word: 'anla', syllables: ['an', 'la'], desc: 'anla (kavra)', hasNewLetter: true },
+      { word: 'lila', syllables: ['li', 'la'], desc: 'lila (açık leylak rengi)', hasNewLetter: true },
+      { word: 'lale', syllables: ['la', 'le'], desc: 'lale (çiçek / Lale isim)', hasNewLetter: true },
+      { word: 'ilan', syllables: ['i', 'lan'], desc: 'ilan (duyuru)', hasNewLetter: true },
+      { word: 'alan', syllables: ['a', 'lan'], desc: 'alan (meydan / satın alan)', hasNewLetter: true },
+      { word: 'Nail', syllables: ['Na', 'il'], desc: 'Nail (isim)', hasNewLetter: true },
+      { word: 'İnal', syllables: ['İ', 'nal'], desc: 'İnal (isim)', hasNewLetter: true },
+      { word: 'alet', syllables: ['a', 'let'], desc: 'alet (araç)', hasNewLetter: true },
+      { word: 'ilet', syllables: ['i', 'let'], desc: 'ilet (gönder)', hasNewLetter: true },
+      { word: 'atlet', syllables: ['at', 'let'], desc: 'atlet (sporcu / giysi)', hasNewLetter: true },
+      { word: 'anlat', syllables: ['an', 'lat'], desc: 'anlat (söyle)', hasNewLetter: true },
+      { word: 'telli', syllables: ['tel', 'li'], desc: 'telli', hasNewLetter: true },
+      { word: 'tatil', syllables: ['ta', 'til'], desc: 'tatil (dinlenme)', hasNewLetter: true },
+      { word: 'Talat', syllables: ['Ta', 'lat'], desc: 'Talat (isim)', hasNewLetter: true },
+      { word: 'Nalan', syllables: ['Na', 'lan'], desc: 'Nalan (isim)', hasNewLetter: true },
+      { word: 'aile', syllables: ['a', 'i', 'le'], desc: 'aile', hasNewLetter: true },
+      { word: 'laleli', syllables: ['la', 'le', 'li'], desc: 'laleli (laleleri olan)', hasNewLetter: true },
+      { word: 'taneli', syllables: ['ta', 'ne', 'li'], desc: 'taneli', hasNewLetter: true },
+      { word: 'naneli', syllables: ['na', 'ne', 'li'], desc: 'naneli', hasNewLetter: true },
+      { word: 'Atilla', syllables: ['A', 'til', 'la'], desc: 'Atilla (isim)', hasNewLetter: true },
+
+      // 2. 'L' Harfli Ek Heceler ve Sözcükler:
+      { word: 'el', syllables: ['el'], desc: 'el', hasNewLetter: true },
+      { word: 'al', syllables: ['al'], desc: 'al (almak / kırmızı)', hasNewLetter: true },
+      { word: 'il', syllables: ['il'], desc: 'il (şehir)', hasNewLetter: true },
+      { word: 'tel', syllables: ['tel'], desc: 'tel', hasNewLetter: true },
+      { word: 'nal', syllables: ['nal'], desc: 'nal (at nalı)', hasNewLetter: true },
+      { word: 'Nil', syllables: ['Nil'], desc: 'Nil (isim / nehir)', hasNewLetter: true },
+      { word: 'elle', syllables: ['el', 'le'], desc: 'elle (dokun)', hasNewLetter: true },
+      { word: 'atla', syllables: ['at', 'la'], desc: 'atla (zıpla)', hasNewLetter: true },
+      { word: 'anneli', syllables: ['an', 'ne', 'li'], desc: 'anneli', hasNewLetter: true },
+      { word: 'ileti', syllables: ['i', 'le', 'ti'], desc: 'ileti (mesaj)', hasNewLetter: true },
+
+      // === A, N, E, T, İ HARFLERİYLE KELİMELER (Görsellerdeki Metinler) ===
+      { word: 'at', syllables: ['at'], desc: 'at' },
+      { word: 'et', syllables: ['et'], desc: 'et' },
+      { word: 'an', syllables: ['an'], desc: 'an' },
+      { word: 'en', syllables: ['en'], desc: 'en' },
+      { word: 'in', syllables: ['in'], desc: 'in' },
+      { word: 'it', syllables: ['it'], desc: 'it' },
+      { word: 'ne', syllables: ['ne'], desc: 'ne' },
+      { word: 'ta', syllables: ['ta'], desc: 'ta' },
+      { word: 'te', syllables: ['te'], desc: 'te' },
+      { word: 'ti', syllables: ['ti'], desc: 'ti' },
+
+      // 3 Harfli Kelimeler (Kitaptan)
+      { word: 'Ata', syllables: ['A', 'ta'], desc: 'Ata' },
+      { word: 'ait', syllables: ['a', 'it'], desc: 'ait' },
+      { word: 'ana', syllables: ['a', 'na'], desc: 'ana' },
+      { word: 'ani', syllables: ['a', 'ni'], desc: 'ani' },
+      { word: 'net', syllables: ['net'], desc: 'net' },
+      { word: 'Tan', syllables: ['Tan'], desc: 'Tan' },
+      { word: 'tat', syllables: ['tat'], desc: 'tat' },
+      { word: 'ten', syllables: ['ten'], desc: 'ten' },
+      { word: 'tin', syllables: ['tin'], desc: 'tin' },
+      { word: 'ant', syllables: ['ant'], desc: 'ant' },
+      { word: 'eti', syllables: ['e', 'ti'], desc: 'eti' },
+
+      // 4 Harfli Kelimeler (Kitaptan)
+      { word: 'anne', syllables: ['an', 'ne'], desc: 'anne' },
+      { word: 'İnan', syllables: ['İ', 'nan'], desc: 'İnan' },
+      { word: 'inat', syllables: ['i', 'nat'], desc: 'inat' },
+      { word: 'tane', syllables: ['ta', 'ne'], desc: 'tane' },
+      { word: 'nane', syllables: ['na', 'ne'], desc: 'nane' },
+      { word: 'nene', syllables: ['ne', 'ne'], desc: 'nene' },
+      { word: 'etti', syllables: ['et', 'ti'], desc: 'etti' },
+      { word: 'itin', syllables: ['i', 'tin'], desc: 'itin' },
+      { word: 'eten', syllables: ['e', 'ten'], desc: 'eten' },
+
+      // 5+ Harfli Kelimeler (Kitaptan)
+      { word: 'annene', syllables: ['an', 'ne', 'ne'], desc: 'annene' },
+      { word: 'annen', syllables: ['an', 'nen'], desc: 'annen' },
+      { word: 'attan', syllables: ['at', 'tan'], desc: 'attan' },
+      { word: 'anane', syllables: ['a', 'na', 'ne'], desc: 'anane' },
+      { word: 'antet', syllables: ['an', 'tet'], desc: 'antet' }
+    ];
+
+    // Pyramid Sentences Directly From The Worksheets + L Piramitleri
+    const PYRAMID_SENTENCES = [
+      // === 'L' HARFİ İLE YENİ PİRAMİT ÇALIŞMALARI (Ömer Asaf İçin) ===
+      { text: 'Ela', syllables: ['E', 'la'], hasNewLetter: true },
+      { text: 'Ela al.', syllables: ['E', 'la', ' ', 'al'], hasNewLetter: true },
+      { text: 'Ela lale al.', syllables: ['E', 'la', ' ', 'la', 'le', ' ', 'al'], hasNewLetter: true },
+      { text: 'Ela annene lale ilet.', syllables: ['E', 'la', ' ', 'an', 'ne', 'ne', ' ', 'la', 'le', ' ', 'i', 'let'], hasNewLetter: true },
+      { text: 'Ela lale al.', syllables: ['E', 'la', ' ', 'la', 'le', ' ', 'al'], hasNewLetter: true },
+      { text: 'Ela al.', syllables: ['E', 'la', ' ', 'al'], hasNewLetter: true },
+      { text: 'Ela', syllables: ['E', 'la'], hasNewLetter: true },
+
+      { text: 'Ali', syllables: ['A', 'li'], hasNewLetter: true },
+      { text: 'Ali al.', syllables: ['A', 'li', ' ', 'al'], hasNewLetter: true },
+      { text: 'Ali nal al.', syllables: ['A', 'li', ' ', 'nal', ' ', 'al'], hasNewLetter: true },
+      { text: 'Ali ata nal al.', syllables: ['A', 'li', ' ', 'a', 'ta', ' ', 'nal', ' ', 'al'], hasNewLetter: true },
+      { text: 'Ali ata nal al.', syllables: ['A', 'li', ' ', 'a', 'ta', ' ', 'nal', ' ', 'al'], hasNewLetter: true },
+      { text: 'Ali nal al.', syllables: ['A', 'li', ' ', 'nal', ' ', 'al'], hasNewLetter: true },
+      { text: 'Ali', syllables: ['A', 'li'], hasNewLetter: true },
+
+      { text: 'Talat', syllables: ['Ta', 'lat'], hasNewLetter: true },
+      { text: 'Talat anlat.', syllables: ['Ta', 'lat', ' ', 'an', 'lat'], hasNewLetter: true },
+      { text: 'Talat tatili anlat.', syllables: ['Ta', 'lat', ' ', 'ta', 'ti', 'li', ' ', 'an', 'lat'], hasNewLetter: true },
+      { text: 'Talat tatili ailene anlat.', syllables: ['Ta', 'lat', ' ', 'ta', 'ti', 'li', ' ', 'a', 'i', 'le', 'ne', ' ', 'an', 'lat'], hasNewLetter: true },
+      { text: 'Talat tatili anlat.', syllables: ['Ta', 'lat', ' ', 'ta', 'ti', 'li', ' ', 'an', 'lat'], hasNewLetter: true },
+      { text: 'Talat anlat.', syllables: ['Ta', 'lat', ' ', 'an', 'lat'], hasNewLetter: true },
+      { text: 'Talat', syllables: ['Ta', 'lat'], hasNewLetter: true },
+
+      { text: 'Nalan', syllables: ['Na', 'lan'], hasNewLetter: true },
+      { text: 'Nalan al.', syllables: ['Na', 'lan', ' ', 'al'], hasNewLetter: true },
+      { text: 'Nalan lila lale al.', syllables: ['Na', 'lan', ' ', 'li', 'la', ' ', 'la', 'le', ' ', 'al'], hasNewLetter: true },
+      { text: 'Nalan laleli atlet al.', syllables: ['Na', 'lan', ' ', 'la', 'le', 'li', ' ', 'at', 'let', ' ', 'al'], hasNewLetter: true },
+
+      { text: 'Atilla', syllables: ['A', 'til', 'la'], hasNewLetter: true },
+      { text: 'Atilla atla.', syllables: ['A', 'til', 'la', ' ', 'at', 'la'], hasNewLetter: true },
+      { text: 'Atilla attan atla.', syllables: ['A', 'til', 'la', ' ', 'at', 'tan', ' ', 'at', 'la'], hasNewLetter: true },
+
+      // === SAYFA 1 - PİRAMİT 1 (Ata) ===
+      { text: 'Ata', syllables: ['A', 'ta'] },
+      { text: 'Ata ait.', syllables: ['A', 'ta', ' ', 'a', 'it'] },
+      { text: 'Ata annene ait.', syllables: ['A', 'ta', ' ', 'an', 'ne', 'ne', ' ', 'a', 'it'] },
+      { text: 'Ata et annene ait.', syllables: ['A', 'ta', ' ', 'et', ' ', 'an', 'ne', 'ne', ' ', 'a', 'it'] },
+      { text: 'Ata annene ait.', syllables: ['A', 'ta', ' ', 'an', 'ne', 'ne', ' ', 'a', 'it'] },
+      { text: 'Ata ait.', syllables: ['A', 'ta', ' ', 'a', 'it'] },
+      { text: 'Ata', syllables: ['A', 'ta'] },
+
+      // === SAYFA 1 - PİRAMİT 2 (İnan Tat) ===
+      { text: 'İnan', syllables: ['İ', 'nan'] },
+      { text: 'İnan tat.', syllables: ['İ', 'nan', ' ', 'tat'] },
+      { text: 'İnan eti tat.', syllables: ['İ', 'nan', ' ', 'e', 'ti', ' ', 'tat'] },
+      { text: 'Tat İnan eti tat.', syllables: ['Tat', ' ', 'İ', 'nan', ' ', 'e', 'ti', ' ', 'tat'] },
+      { text: 'İnan eti tat.', syllables: ['İ', 'nan', ' ', 'e', 'ti', ' ', 'tat'] },
+      { text: 'İnan tat.', syllables: ['İ', 'nan', ' ', 'tat'] },
+      { text: 'İnan', syllables: ['İ', 'nan'] },
+
+      // === SAYFA 2 - PİRAMİT 3 (İnan Attan İn) ===
+      { text: 'İnan', syllables: ['İ', 'nan'] },
+      { text: 'İnan in.', syllables: ['İ', 'nan', ' ', 'in'] },
+      { text: 'İnan attan in.', syllables: ['İ', 'nan', ' ', 'at', 'tan', ' ', 'in'] },
+      { text: 'İn İnan attan in.', syllables: ['İn', ' ', 'İ', 'nan', ' ', 'at', 'tan', ' ', 'in'] },
+      { text: 'İnan attan in.', syllables: ['İ', 'nan', ' ', 'at', 'tan', ' ', 'in'] },
+      { text: 'İnan in.', syllables: ['İ', 'nan', ' ', 'in'] },
+      { text: 'İnan', syllables: ['İ', 'nan'] },
+
+      // === SAYFA 2 - PİRAMİT 4 (Tan İnat Etti) ===
+      { text: 'Tan', syllables: ['Tan'] },
+      { text: 'Tan etti.', syllables: ['Tan', ' ', 'et', 'ti'] },
+      { text: 'Tan inat etti.', syllables: ['Tan', ' ', 'i', 'nat', ' ', 'et', 'ti'] },
+      { text: 'Tan annen inat etti.', syllables: ['Tan', ' ', 'an', 'nen', ' ', 'i', 'nat', ' ', 'et', 'ti'] },
+      { text: 'Tan inat etti.', syllables: ['Tan', ' ', 'i', 'nat', ' ', 'et', 'ti'] },
+      { text: 'Tan etti.', syllables: ['Tan', ' ', 'et', 'ti'] },
+      { text: 'Tan', syllables: ['Tan'] },
+
+      // Ekstra Alıştırmalar
+      { text: 'Anne teli elle.', syllables: ['An', 'ne', ' ', 'te', 'li', ' ', 'el', 'le'], hasNewLetter: true },
+      { text: 'Ela naneli et tat.', syllables: ['E', 'la', ' ', 'na', 'ne', 'li', ' ', 'et', ' ', 'tat'], hasNewLetter: true },
+      { text: 'Nene nane tat.', syllables: ['Ne', 'ne', ' ', 'na', 'ne', ' ', 'tat'] }
+    ];
+
+    // State
+    let appMode = 'words';
+    let currentQueue = [];
+    let retryQueue = [];
+    let currentIndex = 0;
+    let currentItem = null;
+    let stars = 0;
+    let soundEnabled = true;
+
+    // Formatting State
+    let caseMode = 'capitalized';
+    let showSyllables = false;
+    let timerDuration = 10;
+    let timeLeft = 10;
+    let timerInterval = null;
+
+    // Web Audio Synthesizer
+    const AudioEngine = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      },
+      playSuccess() {
+        if (!soundEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+
+        const now = this.ctx.currentTime;
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+
+          gain.gain.setValueAtTime(0, now + idx * 0.08);
+          gain.gain.linearRampToValueAtTime(0.3, now + idx * 0.08 + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.28);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.08);
+          osc.stop(now + idx * 0.08 + 0.3);
+        });
+      },
+      playRetry() {
+        if (!soundEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+
+        const now = this.ctx.currentTime;
+        const notes = [392.00, 329.63];
+        notes.forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.15);
+
+          gain.gain.setValueAtTime(0, now + idx * 0.15);
+          gain.gain.linearRampToValueAtTime(0.25, now + idx * 0.15 + 0.03);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.15 + 0.35);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.15);
+          osc.stop(now + idx * 0.15 + 0.38);
+        });
+      },
+      playTick() {
+        if (!soundEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, now);
+
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.06);
+      }
+    };
+
+    function canMakeWordWithLetters(str, letterSet) {
+      const clean = str.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").trim().toLocaleLowerCase('tr-TR');
+      for (const char of clean) {
+        if (char === ' ') continue;
+        if (!letterSet.has(char)) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function buildQueue() {
+      if (appMode === 'words') {
+        const matchingWords = MASTER_DICTIONARY.filter(item => 
+          canMakeWordWithLetters(item.word, activeLetters)
+        );
+        // Prioritize newly learned L words while mixing them with others
+        const lWords = matchingWords.filter(item => item.hasNewLetter).sort(() => Math.random() - 0.5);
+        const otherWords = matchingWords.filter(item => !item.hasNewLetter).sort(() => Math.random() - 0.5);
+
+        const mixed = [];
+        const maxLen = Math.max(lWords.length, otherWords.length);
+        for (let i = 0; i < maxLen; i++) {
+          if (i < lWords.length) mixed.push(lWords[i]);
+          if (i < otherWords.length) mixed.push(otherWords[i]);
+        }
+        currentQueue = mixed;
+      } else {
+        const matchingPyramids = PYRAMID_SENTENCES.filter(item =>
+          canMakeWordWithLetters(item.text, activeLetters)
+        );
+        currentQueue = [...matchingPyramids];
+      }
+
+      currentIndex = 0;
+      retryQueue = [];
+      updateRetryPill();
+    }
+
+    function showCurrentWord() {
+      if (currentQueue.length === 0) {
+        document.getElementById('displayWord').textContent = "Harika! Hepsi Bitti 🎉";
+        document.getElementById('displayWord').className = "word-text";
+        stopTimer();
+        triggerConfetti();
+        return;
+      }
+
+      if (currentIndex >= currentQueue.length) {
+        if (retryQueue.length > 0) {
+          currentQueue = [...retryQueue];
+          retryQueue = [];
+          currentIndex = 0;
+          showToast("Şimdi tekrar edilecek kelimeler geliyor! 🚀");
+        } else {
+          showSessionComplete();
+          return;
+        }
+      }
+
+      currentItem = currentQueue[currentIndex];
+      const wordText = (appMode === 'words') ? currentItem.word : currentItem.text;
+      const isSentence = wordText.includes(' ') || wordText.length > 10;
+      const hasL = wordText.toLocaleLowerCase('tr-TR').includes('l');
+
+      // Badges
+      document.getElementById('pyramidBadge').style.display = (appMode === 'pyramid') ? 'block' : 'none';
+      document.getElementById('cardRetryBadge').style.display = (currentItem.isRetry) ? 'block' : 'none';
+      document.getElementById('newLetterBadge').style.display = (hasL) ? 'inline-flex' : 'none';
+
+      // Text formatting
+      const displayElem = document.getElementById('displayWord');
+      displayElem.className = isSentence ? "word-text sentence" : "word-text";
+
+      if (showSyllables && currentItem.syllables && currentItem.syllables.length > 0) {
+        displayElem.classList.add('syllable-colored');
+        const formattedSyllables = currentItem.syllables.map(s => applyCasing(s)).map(s => `<span>${s}</span>`);
+        displayElem.innerHTML = formattedSyllables.join('<span style="color:#94a3b8;margin:0 2px;">-</span>');
+      } else {
+        displayElem.classList.remove('syllable-colored');
+        displayElem.textContent = applyCasing(wordText);
+      }
+
+      startTimer();
+    }
+
+    function applyCasing(str) {
+      if (caseMode === 'uppercase') {
+        return str.toLocaleUpperCase('tr-TR');
+      } else if (caseMode === 'lowercase') {
+        return str.toLocaleLowerCase('tr-TR');
+      } else {
+        if (!str) return '';
+        return str.charAt(0).toLocaleUpperCase('tr-TR') + str.slice(1);
+      }
+    }
+
+    /* Timer Logic */
+    function startTimer() {
+      stopTimer();
+      if (timerDuration <= 0) {
+        document.getElementById('timerClock').innerHTML = `<span>♾️</span><span>Süresiz</span>`;
+        document.getElementById('timerProgressBar').style.width = '100%';
+        document.getElementById('timerClock').classList.remove('urgent');
+        return;
+      }
+
+      timeLeft = timerDuration;
+      updateTimerUI();
+
+      timerInterval = setInterval(() => {
+        timeLeft -= 0.1;
+        if (timeLeft <= 0) {
+          timeLeft = 0;
+          updateTimerUI();
+          stopTimer();
+          handleTimeout();
+        } else {
+          updateTimerUI();
+          if (timeLeft <= 3.0 && Math.abs(Math.round(timeLeft * 10) % 10) === 0) {
+            AudioEngine.playTick();
+          }
+        }
+      }, 100);
+    }
+
+    function stopTimer() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    function updateTimerUI() {
+      const clockElem = document.getElementById('timerClock');
+      const textElem = document.getElementById('timerText');
+      const barElem = document.getElementById('timerProgressBar');
+
+      const sec = Math.ceil(timeLeft);
+      textElem.textContent = sec;
+
+      const pct = Math.max(0, (timeLeft / timerDuration) * 100);
+      barElem.style.width = `${pct}%`;
+
+      if (timeLeft <= 3.2 && timeLeft > 0) {
+        clockElem.classList.add('urgent');
+      } else {
+        clockElem.classList.remove('urgent');
+      }
+    }
+
+    /* Handlers */
+    function handleReadSuccess(e) {
+      if (e) e.stopPropagation();
+      stopTimer();
+
+      AudioEngine.playSuccess();
+      triggerConfetti();
+
+      if (navigator.vibrate) navigator.vibrate(50);
+
+      stars += 1;
+      document.getElementById('starCount').textContent = stars;
+      document.getElementById('settingsStarCount').textContent = stars;
+
+      showToast("⭐ Harika Ömer Asaf! +1 Yıldız!");
+
+      currentIndex++;
+      updateRetryPill();
+      setTimeout(showCurrentWord, 400);
+    }
+
+    function handleCardClick() {
+      handleReadSuccess();
+    }
+
+    function handleTimeout() {
+      const card = document.getElementById('wordCard');
+      card.classList.add('shake');
+      setTimeout(() => card.classList.remove('shake'), 600);
+
+      AudioEngine.playRetry();
+
+      if (navigator.vibrate) navigator.vibrate([40, 60, 40]);
+
+      if (currentItem) {
+        const retryItem = { ...currentItem, isRetry: true };
+        const targetPos = Math.min(currentQueue.length, currentIndex + 4);
+        currentQueue.splice(targetPos, 0, retryItem);
+        retryQueue.push(retryItem);
+        updateRetryPill();
+      }
+
+      showToast("Birazdan tekrar deneyeceğiz Ömer Asaf! 💪");
+
+      currentIndex++;
+      setTimeout(showCurrentWord, 900);
+    }
+
+    function updateRetryPill() {
+      const pill = document.getElementById('retryPill');
+      const count = document.getElementById('retryCount');
+      if (retryQueue.length > 0) {
+        pill.style.display = 'flex';
+        count.textContent = retryQueue.length;
+      } else {
+        pill.style.display = 'none';
+      }
+    }
+
+    function speakCurrentWord(e) {
+      if (e) e.stopPropagation();
+      if (!currentItem) return;
+
+      const raw = (appMode === 'words') ? currentItem.word : currentItem.text;
+      const clean = raw.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(clean);
+        utter.lang = 'tr-TR';
+        utter.rate = 0.82;
+        window.speechSynthesis.speak(utter);
+      } else {
+        showToast("Cihazınızda sesli okuma desteklenmiyor.");
+      }
+    }
+
+    function toggleCaseMode() {
+      if (caseMode === 'capitalized') {
+        caseMode = 'uppercase';
+        document.getElementById('caseText').textContent = "TÜMÜ BÜYÜK";
+      } else if (caseMode === 'uppercase') {
+        caseMode = 'lowercase';
+        document.getElementById('caseText').textContent = "tümü küçük";
+      } else {
+        caseMode = 'capitalized';
+        document.getElementById('caseText').textContent = "İlk Harf Büyük";
+      }
+      showCurrentWord();
+    }
+
+    function toggleSyllables() {
+      showSyllables = !showSyllables;
+      const btn = document.getElementById('btnSyllableToggle');
+      if (showSyllables) {
+        btn.classList.add('active');
+        document.getElementById('syllableText').textContent = "Bütün Oku";
+      } else {
+        btn.classList.remove('active');
+        document.getElementById('syllableText').textContent = "Hecelere Ayır";
+      }
+      showCurrentWord();
+    }
+
+    function toggleTimerSpeed() {
+      if (timerDuration === 10) {
+        setTimerLimit(15);
+      } else if (timerDuration === 15) {
+        setTimerLimit(5);
+      } else if (timerDuration === 5) {
+        setTimerLimit(0);
+      } else {
+        setTimerLimit(10);
+      }
+    }
+
+    function setTimerLimit(sec) {
+      timerDuration = sec;
+      document.getElementById('timerSettingText').textContent = sec > 0 ? `Süre: ${sec}sn` : `Süre: Sonsuz`;
+      showCurrentWord();
+    }
+
+    function setAppMode(mode) {
+      appMode = mode;
+      document.getElementById('tabWords').classList.toggle('active', mode === 'words');
+      document.getElementById('tabPyramid').classList.toggle('active', mode === 'pyramid');
+      buildQueue();
+      showCurrentWord();
+    }
+
+    function renderTrayTiles() {
+      const container = document.getElementById('activeTrayLetters');
+      container.innerHTML = '';
+      Array.from(activeLetters).sort().forEach(letter => {
+        const tile = document.createElement('div');
+        tile.className = `letter-tile ${letter === 'l' ? 'highlight' : ''}`;
+        tile.textContent = letter.toLocaleUpperCase('tr-TR');
+        tile.title = (letter === 'l') ? 'Yeni Öğrenilen Harf' : '';
+        container.appendChild(tile);
+      });
+    }
+
+    function openLetterModal() {
+      renderAlphabetGrid();
+      document.getElementById('letterModal').classList.add('open');
+    }
+
+    function openSettingsModal() {
+      document.getElementById('settingsModal').classList.add('open');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
+      buildQueue();
+      showCurrentWord();
+    }
+
+    function renderAlphabetGrid() {
+      const grid = document.getElementById('alphabetGrid');
+      grid.innerHTML = '';
+      TURKISH_ALPHABET.forEach(char => {
+        const btn = document.createElement('button');
+        btn.className = `letter-toggle-btn ${activeLetters.has(char) ? 'active' : ''}`;
+        btn.textContent = char.toLocaleUpperCase('tr-TR');
+        btn.onclick = () => {
+          if (activeLetters.has(char)) {
+            if (activeLetters.size > 2) {
+              activeLetters.delete(char);
+              btn.classList.remove('active');
+            } else {
+              showToast("En az 2 harf seçili olmalı!");
+            }
+          } else {
+            activeLetters.add(char);
+            btn.classList.add('active');
+          }
+          renderTrayTiles();
+        };
+        grid.appendChild(btn);
+      });
+    }
+
+    function resetToInitialLetters() {
+      activeLetters = new Set(['a', 'n', 'e', 't', 'i', 'l']);
+      renderAlphabetGrid();
+      renderTrayTiles();
+      showToast("Tepsi a, n, e, t, i, l harflerine ayarlandı!");
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      document.getElementById('btnSoundToggle').textContent = soundEnabled ? "🔊 Sesler: Açık" : "🔇 Sesler: Kapalı";
+    }
+
+    function resetStars() {
+      stars = 0;
+      document.getElementById('starCount').textContent = 0;
+      document.getElementById('settingsStarCount').textContent = 0;
+      showToast("Yıldızlar sıfırlandı.");
+    }
+
+    function showSessionComplete() {
+      stopTimer();
+      triggerConfetti();
+      document.getElementById('displayWord').innerHTML = `
+        <div style="font-size:32px; color:#16a34a;">🏆 Harikasın!</div>
+        <div style="font-size:20px; color:#475569; margin-top:8px;">Tüm kelimeleri başardın Ömer Asaf!</div>
+      `;
+      setTimeout(() => {
+        buildQueue();
+        showCurrentWord();
+      }, 3500);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('visible');
+      setTimeout(() => toast.classList.remove('visible'), 2000);
+    }
+
+    /* PWA Install Trigger */
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const installBtn = document.getElementById('btnInstallApp');
+      if (installBtn) installBtn.style.display = 'inline-flex';
+    });
+
+    function triggerPwaInstall() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            showToast("Uygulama başarıyla ana ekrana eklendi! 🎉");
+          }
+          deferredPrompt = null;
+        });
+      }
+    }
+
+    /* Confetti Burst */
+    const canvas = document.getElementById('confettiCanvas');
+    const ctx = canvas.getContext('2d');
+    let confettiParticles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function triggerConfetti() {
+      const colors = ['#f59e0b', '#3b82f6', '#10b981', '#ec4899', '#8b5cf6', '#ef4444'];
+      for (let i = 0; i < 40; i++) {
+        confettiParticles.push({
+          x: canvas.width / 2 + (Math.random() - 0.5) * 100,
+          y: canvas.height / 2,
+          vx: (Math.random() - 0.5) * 12,
+          vy: (Math.random() - 1) * 14 - 3,
+          size: Math.random() * 8 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * 360,
+          vRot: (Math.random() - 0.5) * 10,
+          life: 1
+        });
+      }
+      if (confettiParticles.length <= 40) {
+        requestAnimationFrame(renderConfetti);
+      }
+    }
+
+    function renderConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = confettiParticles.length - 1; i >= 0; i--) {
+        const p = confettiParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.4;
+        p.rotation += p.vRot;
+        p.life -= 0.018;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = Math.max(0, p.life);
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+        ctx.restore();
+
+        if (p.life <= 0) {
+          confettiParticles.splice(i, 1);
+        }
+      }
+
+      if (confettiParticles.length > 0) {
+        requestAnimationFrame(renderConfetti);
+      }
+    }
+
+    // Register Service Worker for offline PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
+
+    // Bootstrap
+    window.addEventListener('DOMContentLoaded', () => {
+      renderTrayTiles();
+      buildQueue();
+      showCurrentWord();
+    });
+  </script>
+</body>
+</html>

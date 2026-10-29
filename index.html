@@ -241,6 +241,13 @@
     }
 
     .letter-tile.highlight {
+      background: #fef08a;
+      border-color: #f59e0b;
+      color: #b45309;
+      box-shadow: 0 2px 0 #b45309;
+    }
+
+    .letter-tile.new-highlight {
       background: #dbeafe;
       border-color: #3b82f6;
       color: #1d4ed8;
@@ -647,7 +654,7 @@
         <div class="brand-subtitle">
           <span>👦 Ömer Asaf</span>
           <span>•</span>
-          <span id="headerLevel">1. Sınıf (2024 ANETİL)</span>
+          <span id="headerLevel">1. Sınıf</span>
         </div>
       </div>
     </div>
@@ -679,12 +686,12 @@
       </button>
     </div>
 
-    <!-- Letter Tray Display (Tepsideki Harfler: a, n, e, t, i, l) -->
+    <!-- Letter Tray Display (Tepsideki Harfler: a, n, e, t, i, l, o) -->
     <div class="tray-card">
       <div class="tray-info">
-        <span class="tray-title">🧺 Tepsideki Harfler (Yeni: L):</span>
+        <span class="tray-title" id="trayTitleLabel">🧺 Tepsideki Harfler (Yeni: O):</span>
         <div class="tray-tiles" id="activeTrayLetters">
-          <!-- Dynamically populated letters: A, N, E, T, İ, L -->
+          <!-- Dynamically populated letters: A, N, E, T, İ, L, O -->
         </div>
       </div>
       <button class="btn-secondary" style="border-color: #f59e0b; color: #b45309;" onclick="openLetterModal()">
@@ -712,14 +719,14 @@
         <span class="card-badge badge-pyramid" id="pyramidBadge" style="display:none;">📖 Piramit Okuma</span>
         <span class="card-badge badge-retry" id="cardRetryBadge" style="display:none;">Tekrar Sırasında</span>
 
-        <!-- New letter 'L' highlight badge -->
+        <!-- Dynamic new letter highlight badge -->
         <div class="badge-new-letter" id="newLetterBadge" style="display:none;">
-          <span>🌱</span>
-          <span>Yeni Harf Pratiği: <strong>L</strong></span>
+          <span id="badgeIcon">🌱</span>
+          <span id="badgeText">Yeni Harf Pratiği: <strong>O</strong></span>
         </div>
 
         <!-- Giant Word Text -->
-        <div class="word-text" id="displayWord">Ela</div>
+        <div class="word-text" id="displayWord">otel</div>
 
         <div class="tap-hint">
           <span>👆</span>
@@ -771,9 +778,9 @@
         <!-- 29 Turkish letters generated via JS -->
       </div>
 
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; flex-wrap:wrap; gap:8px;">
         <button class="btn-secondary" onclick="resetToInitialLetters()">
-          🔄 Sıfırla (a, n, e, t, i, l)
+          🔄 Sıfırla (a, n, e, t, i, l, o)
         </button>
         <button class="btn-read" style="padding: 10px 20px; font-size: 16px;" onclick="closeModal('letterModal')">
           Tamam 👍
@@ -793,7 +800,7 @@
       <div style="display: flex; flex-direction: column; gap: 16px; margin: 16px 0;">
         <div>
           <label style="font-weight: 800; font-size: 14px; display: block; margin-bottom: 6px;">⏱️ Sayaç Süresi:</label>
-          <div style="display: flex; gap: 8px;">
+          <div style="display: flex; gap: 8px; flex-wrap:wrap;">
             <button class="btn-secondary" onclick="setTimerLimit(5)">5 saniye</button>
             <button class="btn-secondary active" onclick="setTimerLimit(10)">10 saniye</button>
             <button class="btn-secondary" onclick="setTimerLimit(15)">15 saniye</button>
@@ -839,59 +846,80 @@
   <script>
     /* =========================================================
        HARF TEPSİSİ - ÖMER ASAF
-       Turkish Phonics Reading Practice App (2024 ANETİL)
-       Active letters: a, n, e, t, i, l
+       Turkish Phonics Reading Practice App
+       Learned Letters: a, n, e, t, i, l, o (Focus: O)
        ========================================================= */
 
     const TURKISH_ALPHABET = ['a', 'b', 'c', 'ç', 'd', 'e', 'f', 'g', 'ğ', 'h', 'ı', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'ö', 'p', 'r', 's', 'ş', 't', 'u', 'ü', 'v', 'y', 'z'];
 
-    let activeLetters = new Set(['a', 'n', 'e', 't', 'i', 'l']);
+    // Active letters including O: a, n, e, t, i, l, o
+    let activeLetters = new Set(['a', 'n', 'e', 't', 'i', 'l', 'o']);
 
     // Master Curated Word Database with Syllabification metadata
-    // All words from Seyit Ahmet Uzun 2024 'l' Sesi Hece - Kelime Tablosu + Worksheets
     const MASTER_DICTIONARY = [
-      // === 'L' HARFİ İÇEREN TÜM KELİMELER (2024 ANETİL Tablosundan Tamamı) ===
-      // 1. Tablodaki 26 Kelime (Tam hecelemeleriyle):
-      { word: 'Ela', syllables: ['E', 'la'], desc: 'Ela (isim)', hasNewLetter: true },
-      { word: 'Ali', syllables: ['A', 'li'], desc: 'Ali (isim)', hasNewLetter: true },
-      { word: 'ala', syllables: ['a', 'la'], desc: 'ala (alacalı, güzel)', hasNewLetter: true },
-      { word: 'ile', syllables: ['i', 'le'], desc: 'ile (birlikte)', hasNewLetter: true },
-      { word: 'elli', syllables: ['el', 'li'], desc: 'elli (50 sayısı)', hasNewLetter: true },
-      { word: 'etli', syllables: ['et', 'li'], desc: 'etli (etli yemek)', hasNewLetter: true },
-      { word: 'anla', syllables: ['an', 'la'], desc: 'anla (kavra)', hasNewLetter: true },
-      { word: 'lila', syllables: ['li', 'la'], desc: 'lila (açık leylak rengi)', hasNewLetter: true },
-      { word: 'lale', syllables: ['la', 'le'], desc: 'lale (çiçek / Lale isim)', hasNewLetter: true },
-      { word: 'ilan', syllables: ['i', 'lan'], desc: 'ilan (duyuru)', hasNewLetter: true },
-      { word: 'alan', syllables: ['a', 'lan'], desc: 'alan (meydan / satın alan)', hasNewLetter: true },
-      { word: 'Nail', syllables: ['Na', 'il'], desc: 'Nail (isim)', hasNewLetter: true },
-      { word: 'İnal', syllables: ['İ', 'nal'], desc: 'İnal (isim)', hasNewLetter: true },
-      { word: 'alet', syllables: ['a', 'let'], desc: 'alet (araç)', hasNewLetter: true },
-      { word: 'ilet', syllables: ['i', 'let'], desc: 'ilet (gönder)', hasNewLetter: true },
-      { word: 'atlet', syllables: ['at', 'let'], desc: 'atlet (sporcu / giysi)', hasNewLetter: true },
-      { word: 'anlat', syllables: ['an', 'lat'], desc: 'anlat (söyle)', hasNewLetter: true },
-      { word: 'telli', syllables: ['tel', 'li'], desc: 'telli', hasNewLetter: true },
-      { word: 'tatil', syllables: ['ta', 'til'], desc: 'tatil (dinlenme)', hasNewLetter: true },
-      { word: 'Talat', syllables: ['Ta', 'lat'], desc: 'Talat (isim)', hasNewLetter: true },
-      { word: 'Nalan', syllables: ['Na', 'lan'], desc: 'Nalan (isim)', hasNewLetter: true },
-      { word: 'aile', syllables: ['a', 'i', 'le'], desc: 'aile', hasNewLetter: true },
-      { word: 'laleli', syllables: ['la', 'le', 'li'], desc: 'laleli (laleleri olan)', hasNewLetter: true },
-      { word: 'taneli', syllables: ['ta', 'ne', 'li'], desc: 'taneli', hasNewLetter: true },
-      { word: 'naneli', syllables: ['na', 'ne', 'li'], desc: 'naneli', hasNewLetter: true },
-      { word: 'Atilla', syllables: ['A', 'til', 'la'], desc: 'Atilla (isim)', hasNewLetter: true },
+      // === 'O' HARFİ İLE TÜRETİLEN YENİ ANLAMLI KELİMELER / HECELER ===
+      { word: 'on', syllables: ['on'], desc: 'on (10 sayısı)', focusLetter: 'o' },
+      { word: 'ot', syllables: ['ot'], desc: 'ot (yeşil çimen)', focusLetter: 'o' },
+      { word: 'ol', syllables: ['ol'], desc: 'ol (olmak)', focusLetter: 'o' },
+      { word: 'Ona', syllables: ['O', 'na'], desc: 'Ona', focusLetter: 'o' },
+      { word: 'Alo', syllables: ['A', 'lo'], desc: 'Alo (telefonda konuşma)', focusLetter: 'o' },
+      { word: 'oto', syllables: ['o', 'to'], desc: 'oto (otomobil)', focusLetter: 'o' },
+      { word: 'not', syllables: ['not'], desc: 'not (ders notu / not al)', focusLetter: 'o' },
+      { word: 'ton', syllables: ['ton'], desc: 'ton (1000 kg / renk tonu)', focusLetter: 'o' },
+      { word: 'otel', syllables: ['o', 'tel'], desc: 'otel (konaklama)', focusLetter: 'o' },
+      { word: 'oteli', syllables: ['o', 'te', 'li'], desc: 'oteli', focusLetter: 'o' },
+      { word: 'otelin', syllables: ['o', 'te', 'lin'], desc: 'otelin', focusLetter: 'o' },
+      { word: 'oteline', syllables: ['o', 'te', 'li', 'ne'], desc: 'oteline', focusLetter: 'o' },
+      { word: 'otelli', syllables: ['o', 'tel', 'li'], desc: 'otelli', focusLetter: 'o' },
+      { word: 'olta', syllables: ['ol', 'ta'], desc: 'olta (balık tutma aracı)', focusLetter: 'o' },
+      { word: 'onla', syllables: ['on', 'la'], desc: 'onla (onunla)', focusLetter: 'o' },
+      { word: 'otla', syllables: ['ot', 'la'], desc: 'otla (ot yemek)', focusLetter: 'o' },
+      { word: 'otlat', syllables: ['ot', 'lat'], desc: 'otlat (hayvanı otlatmak)', focusLetter: 'o' },
+      { word: 'nota', syllables: ['no', 'ta'], desc: 'nota (müzik notası)', focusLetter: 'o' },
+      { word: 'loto', syllables: ['lo', 'to'], desc: 'loto (şans oyunu)', focusLetter: 'o' },
+      { word: 'alto', syllables: ['al', 'to'], desc: 'alto (ses türü)', focusLetter: 'o' },
+      { word: 'tonton', syllables: ['ton', 'ton'], desc: 'tonton (sevimli tonton dede)', focusLetter: 'o' },
+      { word: 'oltala', syllables: ['ol', 'ta', 'la'], desc: 'oltala', focusLetter: 'o' },
 
-      // 2. 'L' Harfli Ek Heceler ve Sözcükler:
-      { word: 'el', syllables: ['el'], desc: 'el', hasNewLetter: true },
-      { word: 'al', syllables: ['al'], desc: 'al (almak / kırmızı)', hasNewLetter: true },
-      { word: 'il', syllables: ['il'], desc: 'il (şehir)', hasNewLetter: true },
-      { word: 'tel', syllables: ['tel'], desc: 'tel', hasNewLetter: true },
-      { word: 'nal', syllables: ['nal'], desc: 'nal (at nalı)', hasNewLetter: true },
-      { word: 'Nil', syllables: ['Nil'], desc: 'Nil (isim / nehir)', hasNewLetter: true },
-      { word: 'elle', syllables: ['el', 'le'], desc: 'elle (dokun)', hasNewLetter: true },
-      { word: 'atla', syllables: ['at', 'la'], desc: 'atla (zıpla)', hasNewLetter: true },
-      { word: 'anneli', syllables: ['an', 'ne', 'li'], desc: 'anneli', hasNewLetter: true },
-      { word: 'ileti', syllables: ['i', 'le', 'ti'], desc: 'ileti (mesaj)', hasNewLetter: true },
+      // === 'L' HARFİ İLE KELİMELER (Seyit Ahmet Uzun 2024 ANETİL Tablosu) ===
+      { word: 'Ela', syllables: ['E', 'la'], desc: 'Ela (isim)', focusLetter: 'l' },
+      { word: 'Ali', syllables: ['A', 'li'], desc: 'Ali (isim)', focusLetter: 'l' },
+      { word: 'ala', syllables: ['a', 'la'], desc: 'ala (güzel, alacalı)', focusLetter: 'l' },
+      { word: 'ile', syllables: ['i', 'le'], desc: 'ile (birlikte)', focusLetter: 'l' },
+      { word: 'elli', syllables: ['el', 'li'], desc: 'elli (50 sayısı)', focusLetter: 'l' },
+      { word: 'etli', syllables: ['et', 'li'], desc: 'etli (etli yemek)', focusLetter: 'l' },
+      { word: 'anla', syllables: ['an', 'la'], desc: 'anla (kavra)', focusLetter: 'l' },
+      { word: 'lila', syllables: ['li', 'la'], desc: 'lila (açık mor renk)', focusLetter: 'l' },
+      { word: 'lale', syllables: ['la', 'le'], desc: 'lale (çiçek / Lale isim)', focusLetter: 'l' },
+      { word: 'ilan', syllables: ['i', 'lan'], desc: 'ilan (duyuru)', focusLetter: 'l' },
+      { word: 'alan', syllables: ['a', 'lan'], desc: 'alan (meydan)', focusLetter: 'l' },
+      { word: 'Nail', syllables: ['Na', 'il'], desc: 'Nail (isim)', focusLetter: 'l' },
+      { word: 'İnal', syllables: ['İ', 'nal'], desc: 'İnal (isim)', focusLetter: 'l' },
+      { word: 'alet', syllables: ['a', 'let'], desc: 'alet (araç)', focusLetter: 'l' },
+      { word: 'ilet', syllables: ['i', 'let'], desc: 'ilet (gönder)', focusLetter: 'l' },
+      { word: 'atlet', syllables: ['at', 'let'], desc: 'atlet (sporcu / giysi)', focusLetter: 'l' },
+      { word: 'anlat', syllables: ['an', 'lat'], desc: 'anlat (söyle)', focusLetter: 'l' },
+      { word: 'telli', syllables: ['tel', 'li'], desc: 'telli', focusLetter: 'l' },
+      { word: 'tatil', syllables: ['ta', 'til'], desc: 'tatil (dinlenme)', focusLetter: 'l' },
+      { word: 'Talat', syllables: ['Ta', 'lat'], desc: 'Talat (isim)', focusLetter: 'l' },
+      { word: 'Nalan', syllables: ['Na', 'lan'], desc: 'Nalan (isim)', focusLetter: 'l' },
+      { word: 'aile', syllables: ['a', 'i', 'le'], desc: 'aile', focusLetter: 'l' },
+      { word: 'laleli', syllables: ['la', 'le', 'li'], desc: 'laleli', focusLetter: 'l' },
+      { word: 'taneli', syllables: ['ta', 'ne', 'li'], desc: 'taneli', focusLetter: 'l' },
+      { word: 'naneli', syllables: ['na', 'ne', 'li'], desc: 'naneli', focusLetter: 'l' },
+      { word: 'Atilla', syllables: ['A', 'til', 'la'], desc: 'Atilla (isim)', focusLetter: 'l' },
+      { word: 'el', syllables: ['el'], desc: 'el', focusLetter: 'l' },
+      { word: 'al', syllables: ['al'], desc: 'al (kırmızı / almak)', focusLetter: 'l' },
+      { word: 'il', syllables: ['il'], desc: 'il (şehir)', focusLetter: 'l' },
+      { word: 'tel', syllables: ['tel'], desc: 'tel', focusLetter: 'l' },
+      { word: 'nal', syllables: ['nal'], desc: 'nal', focusLetter: 'l' },
+      { word: 'Nil', syllables: ['Nil'], desc: 'Nil (isim)', focusLetter: 'l' },
+      { word: 'elle', syllables: ['el', 'le'], desc: 'elle', focusLetter: 'l' },
+      { word: 'atla', syllables: ['at', 'la'], desc: 'atla', focusLetter: 'l' },
+      { word: 'anneli', syllables: ['an', 'ne', 'li'], desc: 'anneli', focusLetter: 'l' },
+      { word: 'ileti', syllables: ['i', 'le', 'ti'], desc: 'ileti', focusLetter: 'l' },
 
-      // === A, N, E, T, İ HARFLERİYLE KELİMELER (Görsellerdeki Metinler) ===
+      // === A, N, E, T, İ HARFLERİYLE KELİMELER (İlk Görsellerden) ===
       { word: 'at', syllables: ['at'], desc: 'at' },
       { word: 'et', syllables: ['et'], desc: 'et' },
       { word: 'an', syllables: ['an'], desc: 'an' },
@@ -902,8 +930,6 @@
       { word: 'ta', syllables: ['ta'], desc: 'ta' },
       { word: 'te', syllables: ['te'], desc: 'te' },
       { word: 'ti', syllables: ['ti'], desc: 'ti' },
-
-      // 3 Harfli Kelimeler (Kitaptan)
       { word: 'Ata', syllables: ['A', 'ta'], desc: 'Ata' },
       { word: 'ait', syllables: ['a', 'it'], desc: 'ait' },
       { word: 'ana', syllables: ['a', 'na'], desc: 'ana' },
@@ -915,8 +941,6 @@
       { word: 'tin', syllables: ['tin'], desc: 'tin' },
       { word: 'ant', syllables: ['ant'], desc: 'ant' },
       { word: 'eti', syllables: ['e', 'ti'], desc: 'eti' },
-
-      // 4 Harfli Kelimeler (Kitaptan)
       { word: 'anne', syllables: ['an', 'ne'], desc: 'anne' },
       { word: 'İnan', syllables: ['İ', 'nan'], desc: 'İnan' },
       { word: 'inat', syllables: ['i', 'nat'], desc: 'inat' },
@@ -926,50 +950,102 @@
       { word: 'etti', syllables: ['et', 'ti'], desc: 'etti' },
       { word: 'itin', syllables: ['i', 'tin'], desc: 'itin' },
       { word: 'eten', syllables: ['e', 'ten'], desc: 'eten' },
-
-      // 5+ Harfli Kelimeler (Kitaptan)
       { word: 'annene', syllables: ['an', 'ne', 'ne'], desc: 'annene' },
       { word: 'annen', syllables: ['an', 'nen'], desc: 'annen' },
       { word: 'attan', syllables: ['at', 'tan'], desc: 'attan' },
       { word: 'anane', syllables: ['a', 'na', 'ne'], desc: 'anane' },
-      { word: 'antet', syllables: ['an', 'tet'], desc: 'antet' }
+      { word: 'antet', syllables: ['an', 'tet'], desc: 'antet' },
+
+      // === İLERİ HARFLER İÇİN HAZIR KELİME HAVUZU (k, u, r, m, b, y, vb.) ===
+      // 'k' harfi eklenirse:
+      { word: 'ok', syllables: ['ok'], desc: 'ok' },
+      { word: 'koli', syllables: ['ko', 'li'], desc: 'koli' },
+      { word: 'kilo', syllables: ['ki', 'lo'], desc: 'kilo' },
+      { word: 'konak', syllables: ['ko', 'nak'], desc: 'konak' },
+      { word: 'kol', syllables: ['kol'], desc: 'kol' },
+      { word: 'tokat', syllables: ['to', 'kat'], desc: 'tokat' },
+      { word: 'otlak', syllables: ['ot', 'lak'], desc: 'otlak' },
+      { word: 'nokta', syllables: ['nok', 'ta'], desc: 'nokta' },
+      { word: 'ek', syllables: ['ek'], desc: 'ek' },
+      { word: 'kek', syllables: ['kek'], desc: 'kek' },
+      { word: 'kale', syllables: ['ka', 'le'], desc: 'kale' },
+      { word: 'kedi', syllables: ['ke', 'di'], desc: 'kedi' },
+      // 'u' harfi eklenirse:
+      { word: 'un', syllables: ['un'], desc: 'un' },
+      { word: 'onlu', syllables: ['on', 'lu'], desc: 'onlu' },
+      { word: 'otlu', syllables: ['ot', 'lu'], desc: 'otlu' },
+      { word: 'tut', syllables: ['tut'], desc: 'tut' },
+      { word: 'kutu', syllables: ['ku', 'tu'], desc: 'kutu' },
+      { word: 'okul', syllables: ['o', 'kul'], desc: 'okul' },
+      // 'r' harfi eklenirse:
+      { word: 'nar', syllables: ['nar'], desc: 'nar' },
+      { word: 'orta', syllables: ['or', 'ta'], desc: 'orta' },
+      { word: 'orman', syllables: ['or', 'man'], desc: 'orman' },
+      { word: 'renk', syllables: ['renk'], desc: 'renk' },
+      // 'm' harfi eklenirse:
+      { word: 'mor', syllables: ['mor'], desc: 'mor' },
+      { word: 'limon', syllables: ['li', 'mon'], desc: 'limon' },
+      { word: 'elma', syllables: ['el', 'ma'], desc: 'elma' }
     ];
 
-    // Pyramid Sentences Directly From The Worksheets + L Piramitleri
+    // Pyramid Sentences Directly From The Worksheets + O & L Piramitleri
     const PYRAMID_SENTENCES = [
-      // === 'L' HARFİ İLE YENİ PİRAMİT ÇALIŞMALARI (Ömer Asaf İçin) ===
-      { text: 'Ela', syllables: ['E', 'la'], hasNewLetter: true },
-      { text: 'Ela al.', syllables: ['E', 'la', ' ', 'al'], hasNewLetter: true },
-      { text: 'Ela lale al.', syllables: ['E', 'la', ' ', 'la', 'le', ' ', 'al'], hasNewLetter: true },
-      { text: 'Ela annene lale ilet.', syllables: ['E', 'la', ' ', 'an', 'ne', 'ne', ' ', 'la', 'le', ' ', 'i', 'let'], hasNewLetter: true },
-      { text: 'Ela lale al.', syllables: ['E', 'la', ' ', 'la', 'le', ' ', 'al'], hasNewLetter: true },
-      { text: 'Ela al.', syllables: ['E', 'la', ' ', 'al'], hasNewLetter: true },
-      { text: 'Ela', syllables: ['E', 'la'], hasNewLetter: true },
+      // === 'O' HARFİ İLE YENİ PİRAMİT ÇALIŞMALARI ===
+      { text: 'Ona', syllables: ['O', 'na'], focusLetter: 'o' },
+      { text: 'Ona at.', syllables: ['O', 'na', ' ', 'at'], focusLetter: 'o' },
+      { text: 'Ona ot at.', syllables: ['O', 'na', ' ', 'ot', ' ', 'at'], focusLetter: 'o' },
+      { text: 'Ali ona ot at.', syllables: ['A', 'li', ' ', 'o', 'na', ' ', 'ot', ' ', 'at'], focusLetter: 'o' },
+      { text: 'Ali ata ot at.', syllables: ['A', 'li', ' ', 'a', 'ta', ' ', 'ot', ' ', 'at'], focusLetter: 'o' },
+      { text: 'Ali ona ot at.', syllables: ['A', 'li', ' ', 'o', 'na', ' ', 'ot', ' ', 'at'], focusLetter: 'o' },
+      { text: 'Ona ot at.', syllables: ['O', 'na', ' ', 'ot', ' ', 'at'], focusLetter: 'o' },
+      { text: 'Ona', syllables: ['O', 'na'], focusLetter: 'o' },
 
-      { text: 'Ali', syllables: ['A', 'li'], hasNewLetter: true },
-      { text: 'Ali al.', syllables: ['A', 'li', ' ', 'al'], hasNewLetter: true },
-      { text: 'Ali nal al.', syllables: ['A', 'li', ' ', 'nal', ' ', 'al'], hasNewLetter: true },
-      { text: 'Ali ata nal al.', syllables: ['A', 'li', ' ', 'a', 'ta', ' ', 'nal', ' ', 'al'], hasNewLetter: true },
-      { text: 'Ali ata nal al.', syllables: ['A', 'li', ' ', 'a', 'ta', ' ', 'nal', ' ', 'al'], hasNewLetter: true },
-      { text: 'Ali nal al.', syllables: ['A', 'li', ' ', 'nal', ' ', 'al'], hasNewLetter: true },
-      { text: 'Ali', syllables: ['A', 'li'], hasNewLetter: true },
+      { text: 'Otel', syllables: ['O', 'tel'], focusLetter: 'o' },
+      { text: 'Otel al.', syllables: ['O', 'tel', ' ', 'al'], focusLetter: 'o' },
+      { text: 'Ali otel al.', syllables: ['A', 'li', ' ', 'o', 'tel', ' ', 'al'], focusLetter: 'o' },
+      { text: 'Ali ile Ela otele ait.', syllables: ['A', 'li', ' ', 'i', 'le', ' ', 'E', 'la', ' ', 'o', 'te', 'le', ' ', 'a', 'it'], focusLetter: 'o' },
 
-      { text: 'Talat', syllables: ['Ta', 'lat'], hasNewLetter: true },
-      { text: 'Talat anlat.', syllables: ['Ta', 'lat', ' ', 'an', 'lat'], hasNewLetter: true },
-      { text: 'Talat tatili anlat.', syllables: ['Ta', 'lat', ' ', 'ta', 'ti', 'li', ' ', 'an', 'lat'], hasNewLetter: true },
-      { text: 'Talat tatili ailene anlat.', syllables: ['Ta', 'lat', ' ', 'ta', 'ti', 'li', ' ', 'a', 'i', 'le', 'ne', ' ', 'an', 'lat'], hasNewLetter: true },
-      { text: 'Talat tatili anlat.', syllables: ['Ta', 'lat', ' ', 'ta', 'ti', 'li', ' ', 'an', 'lat'], hasNewLetter: true },
-      { text: 'Talat anlat.', syllables: ['Ta', 'lat', ' ', 'an', 'lat'], hasNewLetter: true },
-      { text: 'Talat', syllables: ['Ta', 'lat'], hasNewLetter: true },
+      { text: 'Olta', syllables: ['Ol', 'ta'], focusLetter: 'o' },
+      { text: 'Olta al.', syllables: ['Ol', 'ta', ' ', 'al'], focusLetter: 'o' },
+      { text: 'Talat olta al.', syllables: ['Ta', 'lat', ' ', 'ol', 'ta', ' ', 'al'], focusLetter: 'o' },
+      { text: 'Talat ona olta al.', syllables: ['Ta', 'lat', ' ', 'o', 'na', ' ', 'ol', 'ta', ' ', 'al'], focusLetter: 'o' },
 
-      { text: 'Nalan', syllables: ['Na', 'lan'], hasNewLetter: true },
-      { text: 'Nalan al.', syllables: ['Na', 'lan', ' ', 'al'], hasNewLetter: true },
-      { text: 'Nalan lila lale al.', syllables: ['Na', 'lan', ' ', 'li', 'la', ' ', 'la', 'le', ' ', 'al'], hasNewLetter: true },
-      { text: 'Nalan laleli atlet al.', syllables: ['Na', 'lan', ' ', 'la', 'le', 'li', ' ', 'at', 'let', ' ', 'al'], hasNewLetter: true },
+      { text: 'Not', syllables: ['Not'], focusLetter: 'o' },
+      { text: 'Not al.', syllables: ['Not', ' ', 'al'], focusLetter: 'o' },
+      { text: 'Nalan not al.', syllables: ['Na', 'lan', ' ', 'not', ' ', 'al'], focusLetter: 'o' },
+      { text: 'Nalan nota al.', syllables: ['Na', 'lan', ' ', 'no', 'ta', ' ', 'al'], focusLetter: 'o' },
+      { text: 'Nalan ona nota anlat.', syllables: ['Na', 'lan', ' ', 'o', 'na', ' ', 'no', 'ta', ' ', 'an', 'lat'], focusLetter: 'o' },
 
-      { text: 'Atilla', syllables: ['A', 'til', 'la'], hasNewLetter: true },
-      { text: 'Atilla atla.', syllables: ['A', 'til', 'la', ' ', 'at', 'la'], hasNewLetter: true },
-      { text: 'Atilla attan atla.', syllables: ['A', 'til', 'la', ' ', 'at', 'tan', ' ', 'at', 'la'], hasNewLetter: true },
+      // === 'L' HARFİ İLE PİRAMİTLER ===
+      { text: 'Ela', syllables: ['E', 'la'], focusLetter: 'l' },
+      { text: 'Ela al.', syllables: ['E', 'la', ' ', 'al'], focusLetter: 'l' },
+      { text: 'Ela lale al.', syllables: ['E', 'la', ' ', 'la', 'le', ' ', 'al'], focusLetter: 'l' },
+      { text: 'Ela annene lale ilet.', syllables: ['E', 'la', ' ', 'an', 'ne', 'ne', ' ', 'la', 'le', ' ', 'i', 'let'], focusLetter: 'l' },
+      { text: 'Ela lale al.', syllables: ['E', 'la', ' ', 'la', 'le', ' ', 'al'], focusLetter: 'l' },
+      { text: 'Ela al.', syllables: ['E', 'la', ' ', 'al'], focusLetter: 'l' },
+      { text: 'Ela', syllables: ['E', 'la'], focusLetter: 'l' },
+
+      { text: 'Ali', syllables: ['A', 'li'], focusLetter: 'l' },
+      { text: 'Ali al.', syllables: ['A', 'li', ' ', 'al'], focusLetter: 'l' },
+      { text: 'Ali nal al.', syllables: ['A', 'li', ' ', 'nal', ' ', 'al'], focusLetter: 'l' },
+      { text: 'Ali ata nal al.', syllables: ['A', 'li', ' ', 'a', 'ta', ' ', 'nal', ' ', 'al'], focusLetter: 'l' },
+      { text: 'Ali ata nal al.', syllables: ['A', 'li', ' ', 'a', 'ta', ' ', 'nal', ' ', 'al'], focusLetter: 'l' },
+      { text: 'Ali nal al.', syllables: ['A', 'li', ' ', 'nal', ' ', 'al'], focusLetter: 'l' },
+      { text: 'Ali', syllables: ['A', 'li'], focusLetter: 'l' },
+
+      { text: 'Talat', syllables: ['Ta', 'lat'], focusLetter: 'l' },
+      { text: 'Talat anlat.', syllables: ['Ta', 'lat', ' ', 'an', 'lat'], focusLetter: 'l' },
+      { text: 'Talat tatili anlat.', syllables: ['Ta', 'lat', ' ', 'ta', 'ti', 'li', ' ', 'an', 'lat'], focusLetter: 'l' },
+      { text: 'Talat tatili ailene anlat.', syllables: ['Ta', 'lat', ' ', 'ta', 'ti', 'li', ' ', 'a', 'i', 'le', 'ne', ' ', 'an', 'lat'], focusLetter: 'l' },
+
+      { text: 'Nalan', syllables: ['Na', 'lan'], focusLetter: 'l' },
+      { text: 'Nalan al.', syllables: ['Na', 'lan', ' ', 'al'], focusLetter: 'l' },
+      { text: 'Nalan lila lale al.', syllables: ['Na', 'lan', ' ', 'li', 'la', ' ', 'la', 'le', ' ', 'al'], focusLetter: 'l' },
+      { text: 'Nalan laleli atlet al.', syllables: ['Na', 'lan', ' ', 'la', 'le', 'li', ' ', 'at', 'let', ' ', 'al'], focusLetter: 'l' },
+
+      { text: 'Atilla', syllables: ['A', 'til', 'la'], focusLetter: 'l' },
+      { text: 'Atilla atla.', syllables: ['A', 'til', 'la', ' ', 'at', 'la'], focusLetter: 'l' },
+      { text: 'Atilla attan atla.', syllables: ['A', 'til', 'la', ' ', 'at', 'tan', ' ', 'at', 'la'], focusLetter: 'l' },
 
       // === SAYFA 1 - PİRAMİT 1 (Ata) ===
       { text: 'Ata', syllables: ['A', 'ta'] },
@@ -1008,8 +1084,8 @@
       { text: 'Tan', syllables: ['Tan'] },
 
       // Ekstra Alıştırmalar
-      { text: 'Anne teli elle.', syllables: ['An', 'ne', ' ', 'te', 'li', ' ', 'el', 'le'], hasNewLetter: true },
-      { text: 'Ela naneli et tat.', syllables: ['E', 'la', ' ', 'na', 'ne', 'li', ' ', 'et', ' ', 'tat'], hasNewLetter: true },
+      { text: 'Anne teli elle.', syllables: ['An', 'ne', ' ', 'te', 'li', ' ', 'el', 'le'], focusLetter: 'l' },
+      { text: 'Ela naneli et tat.', syllables: ['E', 'la', ' ', 'na', 'ne', 'li', ' ', 'et', ' ', 'tat'], focusLetter: 'l' },
       { text: 'Nene nane tat.', syllables: ['Ne', 'ne', ' ', 'na', 'ne', ' ', 'tat'] }
     ];
 
@@ -1121,22 +1197,29 @@
         const matchingWords = MASTER_DICTIONARY.filter(item => 
           canMakeWordWithLetters(item.word, activeLetters)
         );
-        // Prioritize newly learned L words while mixing them with others
-        const lWords = matchingWords.filter(item => item.hasNewLetter).sort(() => Math.random() - 0.5);
-        const otherWords = matchingWords.filter(item => !item.hasNewLetter).sort(() => Math.random() - 0.5);
 
+        // Highlight priority: Words with 'o' if 'o' is selected, otherwise 'l', otherwise shuffle
+        const oWords = matchingWords.filter(item => item.word.toLocaleLowerCase('tr-TR').includes('o')).sort(() => Math.random() - 0.5);
+        const lWords = matchingWords.filter(item => !item.word.toLocaleLowerCase('tr-TR').includes('o') && item.word.toLocaleLowerCase('tr-TR').includes('l')).sort(() => Math.random() - 0.5);
+        const basicWords = matchingWords.filter(item => !item.word.toLocaleLowerCase('tr-TR').includes('o') && !item.word.toLocaleLowerCase('tr-TR').includes('l')).sort(() => Math.random() - 0.5);
+
+        // Interleave so child practices new letters frequently but with fun variety
         const mixed = [];
-        const maxLen = Math.max(lWords.length, otherWords.length);
+        const maxLen = Math.max(oWords.length, lWords.length, basicWords.length);
         for (let i = 0; i < maxLen; i++) {
+          if (i < oWords.length) mixed.push(oWords[i]);
           if (i < lWords.length) mixed.push(lWords[i]);
-          if (i < otherWords.length) mixed.push(otherWords[i]);
+          if (i < basicWords.length) mixed.push(basicWords[i]);
         }
-        currentQueue = mixed;
+        currentQueue = mixed.length > 0 ? mixed : matchingWords;
       } else {
         const matchingPyramids = PYRAMID_SENTENCES.filter(item =>
           canMakeWordWithLetters(item.text, activeLetters)
         );
-        currentQueue = [...matchingPyramids];
+        // Interleave pyramids containing 'o'
+        const oPyramids = matchingPyramids.filter(item => item.text.toLocaleLowerCase('tr-TR').includes('o'));
+        const otherPyramids = matchingPyramids.filter(item => !item.text.toLocaleLowerCase('tr-TR').includes('o'));
+        currentQueue = [...oPyramids, ...otherPyramids];
       }
 
       currentIndex = 0;
@@ -1168,12 +1251,24 @@
       currentItem = currentQueue[currentIndex];
       const wordText = (appMode === 'words') ? currentItem.word : currentItem.text;
       const isSentence = wordText.includes(' ') || wordText.length > 10;
-      const hasL = wordText.toLocaleLowerCase('tr-TR').includes('l');
+      const lower = wordText.toLocaleLowerCase('tr-TR');
 
       // Badges
       document.getElementById('pyramidBadge').style.display = (appMode === 'pyramid') ? 'block' : 'none';
       document.getElementById('cardRetryBadge').style.display = (currentItem.isRetry) ? 'block' : 'none';
-      document.getElementById('newLetterBadge').style.display = (hasL) ? 'inline-flex' : 'none';
+
+      const badgeElem = document.getElementById('newLetterBadge');
+      if (lower.includes('o') && activeLetters.has('o')) {
+        badgeElem.style.display = 'inline-flex';
+        document.getElementById('badgeIcon').textContent = '🌱';
+        document.getElementById('badgeText').innerHTML = 'Yeni Harf Pratiği: <strong>O</strong>';
+      } else if (lower.includes('l') && activeLetters.has('l')) {
+        badgeElem.style.display = 'inline-flex';
+        document.getElementById('badgeIcon').textContent = '⭐';
+        document.getElementById('badgeText').innerHTML = 'Harf Pratiği: <strong>L</strong>';
+      } else {
+        badgeElem.style.display = 'none';
+      }
 
       // Text formatting
       const displayElem = document.getElementById('displayWord');
@@ -1391,11 +1486,22 @@
       container.innerHTML = '';
       Array.from(activeLetters).sort().forEach(letter => {
         const tile = document.createElement('div');
-        tile.className = `letter-tile ${letter === 'l' ? 'highlight' : ''}`;
+        const isNewO = (letter === 'o');
+        const isL = (letter === 'l');
+        tile.className = `letter-tile ${isNewO ? 'new-highlight' : (isL ? 'highlight' : '')}`;
         tile.textContent = letter.toLocaleUpperCase('tr-TR');
-        tile.title = (letter === 'l') ? 'Yeni Öğrenilen Harf' : '';
+        tile.title = isNewO ? 'Yeni Harf: O' : '';
         container.appendChild(tile);
       });
+
+      const label = document.getElementById('trayTitleLabel');
+      if (activeLetters.has('o')) {
+        label.textContent = "🧺 Tepsideki Harfler (Yeni: O):";
+      } else if (activeLetters.has('l')) {
+        label.textContent = "🧺 Tepsideki Harfler (Yeni: L):";
+      } else {
+        label.textContent = "🧺 Tepsideki Harfler:";
+      }
     }
 
     function openLetterModal() {
@@ -1439,10 +1545,10 @@
     }
 
     function resetToInitialLetters() {
-      activeLetters = new Set(['a', 'n', 'e', 't', 'i', 'l']);
+      activeLetters = new Set(['a', 'n', 'e', 't', 'i', 'l', 'o']);
       renderAlphabetGrid();
       renderTrayTiles();
-      showToast("Tepsi a, n, e, t, i, l harflerine ayarlandı!");
+      showToast("Tepsi a, n, e, t, i, l, o harflerine ayarlandı!");
     }
 
     function toggleSound() {

@@ -10,8 +10,8 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>Harf Tepsisi (v1.0.2 - O Harfi) - Ömer Asaf</title>
-  <link rel="manifest" href="manifest.json?v=102">
+  <title>Harf Tepsisi (v1.0.3) - Ömer Asaf</title>
+  <link rel="manifest" href="manifest.json?v=103">
   <style>
     :root {
       --bg-gradient-start: #e0f2fe;
@@ -663,6 +663,9 @@
     </div>
 
     <div class="stats-container">
+      <button id="headerUpdateBadge" onclick="checkForGitHubUpdate(false)" style="display: none; background: #16a34a; color: white; font-size: 11px; font-weight: 800; border: none; padding: 5px 10px; border-radius: 999px; cursor: pointer; animation: pulse 1s infinite alternate; box-shadow: var(--shadow-sm);">
+        🚀 Güncelleme Var!
+      </button>
       <div class="stat-pill stars" title="Kazanılan Yıldızlar">
         <span>⭐</span>
         <span id="starCount">0</span>
@@ -675,11 +678,16 @@
   </header>
 
   <!-- Live Version Notification Bar -->
-  <div style="background:#0284c7; color:white; font-size:12px; font-weight:800; padding:6px 14px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 4px rgba(0,0,0,0.1);">
-    <span>🚀 <strong>v1.0.2:</strong> O Harfi Aktif! ('otel', 'on', 'olta'...)</span>
-    <button onclick="forceCleanReload()" style="background:#ffffff; color:#0284c7; border:none; padding:4px 10px; border-radius:999px; font-weight:900; font-size:11px; cursor:pointer;">
-      Yenile 🔄
-    </button>
+  <div style="background:#0284c7; color:white; font-size:12px; font-weight:800; padding:6px 14px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 4px rgba(0,0,0,0.1); flex-wrap:wrap; gap:6px;">
+    <span>🚀 <strong>v1.0.3:</strong> 10 Yeni Piramit & Otomatik Güncelleme Eklendi!</span>
+    <div style="display:flex; gap:6px;">
+      <button onclick="checkForGitHubUpdate(false)" style="background:#e0f2fe; color:#0369a1; border:none; padding:3px 8px; border-radius:999px; font-weight:800; font-size:11px; cursor:pointer;">
+        Güncelleme Denetle 🔍
+      </button>
+      <button onclick="forceCleanReload()" style="background:#ffffff; color:#0284c7; border:none; padding:3px 8px; border-radius:999px; font-weight:900; font-size:11px; cursor:pointer;">
+        Yenile 🔄
+      </button>
+    </div>
   </div>
 
   <!-- Main Screen -->
@@ -835,6 +843,23 @@
         </div>
 
         <div>
+          <label style="font-weight: 800; font-size: 14px; display: block; margin-bottom: 6px;">🔄 Otomatik Güncelleme:</label>
+          <div style="background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:14px; padding:12px; display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:13px; font-weight:700;">Mevcut Sürüm:</span>
+              <strong style="color:#0284c7;" id="currentVersionLabel">v1.0.3</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:13px; font-weight:700;">Durum:</span>
+              <span id="updateCheckStatusText" style="font-size:12px; font-weight:800; color:#64748b;">Denetleniyor...</span>
+            </div>
+            <button class="btn-secondary" onclick="checkForGitHubUpdate(false)" style="width:100%; justify-content:center; padding:8px;">
+              <span>🔍 Güncellemeleri Şimdi Denetle</span>
+            </button>
+          </div>
+        </div>
+
+        <div>
           <label style="font-weight: 800; font-size: 14px; display: block; margin-bottom: 6px;">📲 Uygulama Yükleme (PWA):</label>
           <button class="btn-secondary" id="btnInstallApp" onclick="triggerPwaInstall()" style="display:none;">
             <span>📥 Ana Ekrana Ekle (Uygulama Olarak Yükle)</span>
@@ -846,6 +871,35 @@
       <div style="display: flex; justify-content: flex-end; margin-top: 14px;">
         <button class="btn-read" style="padding: 10px 20px; font-size: 16px;" onclick="closeModal('settingsModal')">
           Kapat 👍
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GitHub Auto Update Modal -->
+  <div class="modal-overlay" id="updateFoundModal">
+    <div class="modal-card" style="border-color:#22c55e;">
+      <div class="modal-title" style="color:#16a34a;">
+        <span>🚀</span>
+        <span>Yeni Güncelleme Mevcut!</span>
+      </div>
+      <div style="background:#f0fdf4; border:1.5px solid #86efac; border-radius:14px; padding:12px; margin:10px 0;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <span style="font-size:13px; font-weight:800; color:#166534;">Harf Tepsisi Yeni Sürüm:</span>
+          <span class="pill" id="updateModalTag" style="background:#dcfce7; border-color:#86efac; color:#166534; font-size:12px;">v1.0.3</span>
+        </div>
+        <div id="updateModalNotes" style="font-size:13px; color:#1e293b; line-height:1.4; max-height:160px; overflow-y:auto; white-space:pre-wrap;">Yeni özellikler ve hızlı okuma piramitleri eklendi!</div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:8px; margin-top:14px;">
+        <button class="btn-read" id="btnDownloadApk" onclick="downloadLatestApk()" style="padding:12px 18px; font-size:17px; width:100%;">
+          <span>📲 Yeni APK'yı İndir ve Kur</span>
+        </button>
+        <button class="btn-secondary" onclick="forceCleanReload()" style="justify-content:center; padding:10px;">
+          <span>⚡ Web Sürümünü Hemen Yenile</span>
+        </button>
+        <button class="btn-secondary" onclick="closeModal('updateFoundModal')" style="justify-content:center; border:none; color:#64748b;">
+          Daha Sonra
         </button>
       </div>
     </div>
@@ -929,6 +983,7 @@
       { word: 'atla', syllables: ['at', 'la'], desc: 'atla', focusLetter: 'l' },
       { word: 'anneli', syllables: ['an', 'ne', 'li'], desc: 'anneli', focusLetter: 'l' },
       { word: 'ileti', syllables: ['i', 'le', 'ti'], desc: 'ileti', focusLetter: 'l' },
+      { word: 'ele', syllables: ['e', 'le'], desc: 'ele (elekten geçir / selam)', focusLetter: 'l' },
 
       // === A, N, E, T, İ HARFLERİYLE KELİMELER (İlk Görsellerden) ===
       { word: 'at', syllables: ['at'], desc: 'at' },
@@ -1001,103 +1056,140 @@
 
     // Pyramid Sentences Directly From The Worksheets + O & L Piramitleri
     const PYRAMID_SENTENCES = [
-      // === 'O' HARFİ İLE YENİ PİRAMİT ÇALIŞMALARI ===
+      // === 5 YENİ ÇALIŞMA SAYFASI / 10 PİRAMİT ÇALIŞMASI (Ömer Asaf İçin) ===
+      // 1. Ele (El ele piramidi)
+      { text: 'Ele.', syllables: ['E', 'le.'] },
+      { text: 'El ele.', syllables: ['El', ' ', 'e', 'le.'] },
+      { text: 'Ela el ele.', syllables: ['E', 'la', ' ', 'el', ' ', 'e', 'le.'] },
+      { text: 'Ela, Nil ile el ele.', syllables: ['E', 'la,', ' ', 'Nil', ' ', 'i', 'le', ' ', 'el', ' ', 'e', 'le.'] },
+      { text: 'Ela, Nil, Ali ile el ele.', syllables: ['E', 'la,', ' ', 'Nil,', ' ', 'A', 'li', ' ', 'i', 'le', ' ', 'el', ' ', 'e', 'le.'] },
+      { text: 'Ela, Nil ile el ele.', syllables: ['E', 'la,', ' ', 'Nil', ' ', 'i', 'le', ' ', 'el', ' ', 'e', 'le.'] },
+      { text: 'Ela el ele.', syllables: ['E', 'la', ' ', 'el', ' ', 'e', 'le.'] },
+      { text: 'El ele.', syllables: ['El', ' ', 'e', 'le.'] },
+
+      // 2. Al (Lale al piramidi)
+      { text: 'Al.', syllables: ['Al.'] },
+      { text: 'Lale al.', syllables: ['La', 'le', ' ', 'al.'] },
+      { text: 'Lale, lale al.', syllables: ['La', 'le,', ' ', 'la', 'le', ' ', 'al.'] },
+      { text: 'Lale, lila lale al.', syllables: ['La', 'le,', ' ', 'li', 'la', ' ', 'la', 'le', ' ', 'al.'] },
+      { text: 'Lale, elli lila lale al.', syllables: ['La', 'le,', ' ', 'el', 'li', ' ', 'li', 'la', ' ', 'la', 'le', ' ', 'al.'] },
+      { text: 'Lale, lila lale al.', syllables: ['La', 'le,', ' ', 'li', 'la', ' ', 'la', 'le', ' ', 'al.'] },
+      { text: 'Lale, lale al.', syllables: ['La', 'le,', ' ', 'la', 'le', ' ', 'al.'] },
+      { text: 'Lale al.', syllables: ['La', 'le', ' ', 'al.'] },
+
+      // 3. Al (Nail atlet al piramidi)
+      { text: 'Al.', syllables: ['Al.'] },
+      { text: 'Atlet al.', syllables: ['At', 'let', ' ', 'al.'] },
+      { text: 'Nail atlet al.', syllables: ['Na', 'il', ' ', 'at', 'let', ' ', 'al.'] },
+      { text: 'Nail lila atlet al.', syllables: ['Na', 'il', ' ', 'li', 'la', ' ', 'at', 'let', ' ', 'al.'] },
+      { text: 'Nail elli lila atlet al.', syllables: ['Na', 'il', ' ', 'el', 'li', ' ', 'li', 'la', ' ', 'at', 'let', ' ', 'al.'] },
+      { text: 'Nail lila atlet al.', syllables: ['Na', 'il', ' ', 'li', 'la', ' ', 'at', 'let', ' ', 'al.'] },
+      { text: 'Nail atlet al.', syllables: ['Na', 'il', ' ', 'at', 'let', ' ', 'al.'] },
+      { text: 'Atlet al.', syllables: ['At', 'let', ' ', 'al.'] },
+
+      // 4. Al (Ali alet al piramidi)
+      { text: 'Al.', syllables: ['Al.'] },
+      { text: 'Alet al.', syllables: ['A', 'let', ' ', 'al.'] },
+      { text: 'Ali alet al.', syllables: ['A', 'li', ' ', 'a', 'let', ' ', 'al.'] },
+      { text: 'Ali telli alet al.', syllables: ['A', 'li', ' ', 'tel', 'li', ' ', 'a', 'let', ' ', 'al.'] },
+      { text: 'Ali elli telli alet al.', syllables: ['A', 'li', ' ', 'el', 'li', ' ', 'tel', 'li', ' ', 'a', 'let', ' ', 'al.'] },
+      { text: 'Ali telli alet al.', syllables: ['A', 'li', ' ', 'tel', 'li', ' ', 'a', 'let', ' ', 'al.'] },
+      { text: 'Ali alet al.', syllables: ['A', 'li', ' ', 'a', 'let', ' ', 'al.'] },
+      { text: 'Alet al.', syllables: ['A', 'let', ' ', 'al.'] },
+
+      // 5. Al (Nalan nal al piramidi)
+      { text: 'Al.', syllables: ['Al.'] },
+      { text: 'Nal al.', syllables: ['Nal', ' ', 'al.'] },
+      { text: 'Nalan nal al.', syllables: ['Na', 'lan', ' ', 'nal', ' ', 'al.'] },
+      { text: 'Nalan elli nal al.', syllables: ['Na', 'lan', ' ', 'el', 'li', ' ', 'nal', ' ', 'al.'] },
+      { text: 'Nalan elli tane nal al.', syllables: ['Na', 'lan', ' ', 'el', 'li', ' ', 'ta', 'ne', ' ', 'nal', ' ', 'al.'] },
+      { text: 'Nalan elli nal al.', syllables: ['Na', 'lan', ' ', 'el', 'li', ' ', 'nal', ' ', 'al.'] },
+      { text: 'Nalan nal al.', syllables: ['Na', 'lan', ' ', 'nal', ' ', 'al.'] },
+      { text: 'Nal al.', syllables: ['Nal', ' ', 'al.'] },
+
+      // 6. Al (Nail ile Ali al piramidi)
+      { text: 'Al.', syllables: ['Al.'] },
+      { text: 'Ali al.', syllables: ['A', 'li', ' ', 'al.'] },
+      { text: 'Nail ile Ali al.', syllables: ['Na', 'il', ' ', 'i', 'le', ' ', 'A', 'li', ' ', 'al.'] },
+      { text: 'Nail ile Ali lale al.', syllables: ['Na', 'il', ' ', 'i', 'le', ' ', 'A', 'li', ' ', 'la', 'le', ' ', 'al.'] },
+      { text: 'Nail ile Ali lila lale al.', syllables: ['Na', 'il', ' ', 'i', 'le', ' ', 'A', 'li', ' ', 'li', 'la', ' ', 'la', 'le', ' ', 'al.'] },
+      { text: 'Nail ile Ali lale al.', syllables: ['Na', 'il', ' ', 'i', 'le', ' ', 'A', 'li', ' ', 'la', 'le', ' ', 'al.'] },
+      { text: 'Nail ile Ali al.', syllables: ['Na', 'il', ' ', 'i', 'le', ' ', 'A', 'li', ' ', 'al.'] },
+      { text: 'Ali al.', syllables: ['A', 'li', ' ', 'al.'] },
+
+      // 7. Al (Ali tel al piramidi)
+      { text: 'Al.', syllables: ['Al.'] },
+      { text: 'Tel al.', syllables: ['Tel', ' ', 'al.'] },
+      { text: 'Ali tel al.', syllables: ['A', 'li', ' ', 'tel', ' ', 'al.'] },
+      { text: 'Ali elli tel al.', syllables: ['A', 'li', ' ', 'el', 'li', ' ', 'tel', ' ', 'al.'] },
+      { text: 'Ali elli tane tel al.', syllables: ['A', 'li', ' ', 'el', 'li', ' ', 'ta', 'ne', ' ', 'tel', ' ', 'al.'] },
+      { text: 'Ali elli tel al.', syllables: ['A', 'li', ' ', 'el', 'li', ' ', 'tel', ' ', 'al.'] },
+      { text: 'Ali tel al.', syllables: ['A', 'li', ' ', 'tel', ' ', 'al.'] },
+      { text: 'Tel al.', syllables: ['Tel', ' ', 'al.'] },
+
+      // 8. Al (Anne nane al piramidi)
+      { text: 'Al.', syllables: ['Al.'] },
+      { text: 'Anne al.', syllables: ['An', 'ne', ' ', 'al.'] },
+      { text: 'Anne nane al.', syllables: ['An', 'ne', ' ', 'na', 'ne', ' ', 'al.'] },
+      { text: 'Anne elli nane al.', syllables: ['An', 'ne', ' ', 'el', 'li', ' ', 'na', 'ne', ' ', 'al.'] },
+      { text: 'Anne elli tane nane al.', syllables: ['An', 'ne', ' ', 'el', 'li', ' ', 'ta', 'ne', ' ', 'na', 'ne', ' ', 'al.'] },
+      { text: 'Anne elli nane al.', syllables: ['An', 'ne', ' ', 'el', 'li', ' ', 'na', 'ne', ' ', 'al.'] },
+      { text: 'Anne nane al.', syllables: ['An', 'ne', ' ', 'na', 'ne', ' ', 'al.'] },
+      { text: 'Anne al.', syllables: ['An', 'ne', ' ', 'al.'] },
+
+      // 9. Anlat (Nil anlat piramidi)
+      { text: 'Anlat.', syllables: ['An', 'lat.'] },
+      { text: 'Nil anlat.', syllables: ['Nil', ' ', 'an', 'lat.'] },
+      { text: 'Ela ile Nil anlat.', syllables: ['E', 'la', ' ', 'i', 'le', ' ', 'Nil', ' ', 'an', 'lat.'] },
+      { text: 'Ela ile Nil tatil anlat.', syllables: ['E', 'la', ' ', 'i', 'le', ' ', 'Nil', ' ', 'ta', 'til', ' ', 'an', 'lat.'] },
+      { text: 'Ela ile Nil il il tatil anlat.', syllables: ['E', 'la', ' ', 'i', 'le', ' ', 'Nil', ' ', 'il', ' ', 'il', ' ', 'ta', 'til', ' ', 'an', 'lat.'] },
+      { text: 'Ela ile Nil tatil anlat.', syllables: ['E', 'la', ' ', 'i', 'le', ' ', 'Nil', ' ', 'ta', 'til', ' ', 'an', 'lat.'] },
+      { text: 'Ela ile Nil anlat.', syllables: ['E', 'la', ' ', 'i', 'le', ' ', 'Nil', ' ', 'an', 'lat.'] },
+      { text: 'Nil anlat.', syllables: ['Nil', ' ', 'an', 'lat.'] },
+
+      // 10. Atla (Nalan atla piramidi)
+      { text: 'Atla.', syllables: ['At', 'la.'] },
+      { text: 'Nalan atla.', syllables: ['Na', 'lan', ' ', 'at', 'la.'] },
+      { text: 'Nalan, Ela atla.', syllables: ['Na', 'lan,', ' ', 'E', 'la', ' ', 'at', 'la.'] },
+      { text: 'Nalan, Ela ile atla.', syllables: ['Na', 'lan,', ' ', 'E', 'la', ' ', 'i', 'le', ' ', 'at', 'la.'] },
+      { text: 'Nalan, Ela ile el ele atla.', syllables: ['Na', 'lan,', ' ', 'E', 'la', ' ', 'i', 'le', ' ', 'el', ' ', 'e', 'le', ' ', 'at', 'la.'] },
+      { text: 'Nalan, Ela ile atla.', syllables: ['Na', 'lan,', ' ', 'E', 'la', ' ', 'i', 'le', ' ', 'at', 'la.'] },
+      { text: 'Nalan, Ela atla.', syllables: ['Na', 'lan,', ' ', 'E', 'la', ' ', 'at', 'la.'] },
+      { text: 'Nalan atla.', syllables: ['Na', 'lan', ' ', 'at', 'la.'] },
+
+      // === 'O' HARFİ İLE PİRAMİT ÇALIŞMALARI ===
       { text: 'Ona', syllables: ['O', 'na'], focusLetter: 'o' },
       { text: 'Ona at.', syllables: ['O', 'na', ' ', 'at'], focusLetter: 'o' },
       { text: 'Ona ot at.', syllables: ['O', 'na', ' ', 'ot', ' ', 'at'], focusLetter: 'o' },
       { text: 'Ali ona ot at.', syllables: ['A', 'li', ' ', 'o', 'na', ' ', 'ot', ' ', 'at'], focusLetter: 'o' },
       { text: 'Ali ata ot at.', syllables: ['A', 'li', ' ', 'a', 'ta', ' ', 'ot', ' ', 'at'], focusLetter: 'o' },
-      { text: 'Ali ona ot at.', syllables: ['A', 'li', ' ', 'o', 'na', ' ', 'ot', ' ', 'at'], focusLetter: 'o' },
-      { text: 'Ona ot at.', syllables: ['O', 'na', ' ', 'ot', ' ', 'at'], focusLetter: 'o' },
-      { text: 'Ona', syllables: ['O', 'na'], focusLetter: 'o' },
-
       { text: 'Otel', syllables: ['O', 'tel'], focusLetter: 'o' },
       { text: 'Otel al.', syllables: ['O', 'tel', ' ', 'al'], focusLetter: 'o' },
       { text: 'Ali otel al.', syllables: ['A', 'li', ' ', 'o', 'tel', ' ', 'al'], focusLetter: 'o' },
       { text: 'Ali ile Ela otele ait.', syllables: ['A', 'li', ' ', 'i', 'le', ' ', 'E', 'la', ' ', 'o', 'te', 'le', ' ', 'a', 'it'], focusLetter: 'o' },
-
       { text: 'Olta', syllables: ['Ol', 'ta'], focusLetter: 'o' },
       { text: 'Olta al.', syllables: ['Ol', 'ta', ' ', 'al'], focusLetter: 'o' },
       { text: 'Talat olta al.', syllables: ['Ta', 'lat', ' ', 'ol', 'ta', ' ', 'al'], focusLetter: 'o' },
-      { text: 'Talat ona olta al.', syllables: ['Ta', 'lat', ' ', 'o', 'na', ' ', 'ol', 'ta', ' ', 'al'], focusLetter: 'o' },
-
       { text: 'Not', syllables: ['Not'], focusLetter: 'o' },
       { text: 'Not al.', syllables: ['Not', ' ', 'al'], focusLetter: 'o' },
       { text: 'Nalan not al.', syllables: ['Na', 'lan', ' ', 'not', ' ', 'al'], focusLetter: 'o' },
       { text: 'Nalan nota al.', syllables: ['Na', 'lan', ' ', 'no', 'ta', ' ', 'al'], focusLetter: 'o' },
-      { text: 'Nalan ona nota anlat.', syllables: ['Na', 'lan', ' ', 'o', 'na', ' ', 'no', 'ta', ' ', 'an', 'lat'], focusLetter: 'o' },
 
-      // === 'L' HARFİ İLE PİRAMİTLER ===
-      { text: 'Ela', syllables: ['E', 'la'], focusLetter: 'l' },
-      { text: 'Ela al.', syllables: ['E', 'la', ' ', 'al'], focusLetter: 'l' },
-      { text: 'Ela lale al.', syllables: ['E', 'la', ' ', 'la', 'le', ' ', 'al'], focusLetter: 'l' },
-      { text: 'Ela annene lale ilet.', syllables: ['E', 'la', ' ', 'an', 'ne', 'ne', ' ', 'la', 'le', ' ', 'i', 'let'], focusLetter: 'l' },
-      { text: 'Ela lale al.', syllables: ['E', 'la', ' ', 'la', 'le', ' ', 'al'], focusLetter: 'l' },
-      { text: 'Ela al.', syllables: ['E', 'la', ' ', 'al'], focusLetter: 'l' },
-      { text: 'Ela', syllables: ['E', 'la'], focusLetter: 'l' },
-
-      { text: 'Ali', syllables: ['A', 'li'], focusLetter: 'l' },
-      { text: 'Ali al.', syllables: ['A', 'li', ' ', 'al'], focusLetter: 'l' },
-      { text: 'Ali nal al.', syllables: ['A', 'li', ' ', 'nal', ' ', 'al'], focusLetter: 'l' },
-      { text: 'Ali ata nal al.', syllables: ['A', 'li', ' ', 'a', 'ta', ' ', 'nal', ' ', 'al'], focusLetter: 'l' },
-      { text: 'Ali ata nal al.', syllables: ['A', 'li', ' ', 'a', 'ta', ' ', 'nal', ' ', 'al'], focusLetter: 'l' },
-      { text: 'Ali nal al.', syllables: ['A', 'li', ' ', 'nal', ' ', 'al'], focusLetter: 'l' },
-      { text: 'Ali', syllables: ['A', 'li'], focusLetter: 'l' },
-
-      { text: 'Talat', syllables: ['Ta', 'lat'], focusLetter: 'l' },
-      { text: 'Talat anlat.', syllables: ['Ta', 'lat', ' ', 'an', 'lat'], focusLetter: 'l' },
-      { text: 'Talat tatili anlat.', syllables: ['Ta', 'lat', ' ', 'ta', 'ti', 'li', ' ', 'an', 'lat'], focusLetter: 'l' },
-      { text: 'Talat tatili ailene anlat.', syllables: ['Ta', 'lat', ' ', 'ta', 'ti', 'li', ' ', 'a', 'i', 'le', 'ne', ' ', 'an', 'lat'], focusLetter: 'l' },
-
-      { text: 'Nalan', syllables: ['Na', 'lan'], focusLetter: 'l' },
-      { text: 'Nalan al.', syllables: ['Na', 'lan', ' ', 'al'], focusLetter: 'l' },
-      { text: 'Nalan lila lale al.', syllables: ['Na', 'lan', ' ', 'li', 'la', ' ', 'la', 'le', ' ', 'al'], focusLetter: 'l' },
-      { text: 'Nalan laleli atlet al.', syllables: ['Na', 'lan', ' ', 'la', 'le', 'li', ' ', 'at', 'let', ' ', 'al'], focusLetter: 'l' },
-
-      { text: 'Atilla', syllables: ['A', 'til', 'la'], focusLetter: 'l' },
-      { text: 'Atilla atla.', syllables: ['A', 'til', 'la', ' ', 'at', 'la'], focusLetter: 'l' },
-      { text: 'Atilla attan atla.', syllables: ['A', 'til', 'la', ' ', 'at', 'tan', ' ', 'at', 'la'], focusLetter: 'l' },
-
-      // === SAYFA 1 - PİRAMİT 1 (Ata) ===
+      // === İLK ÇALIŞMALAR (Ata & İnan Piramitleri) ===
       { text: 'Ata', syllables: ['A', 'ta'] },
       { text: 'Ata ait.', syllables: ['A', 'ta', ' ', 'a', 'it'] },
       { text: 'Ata annene ait.', syllables: ['A', 'ta', ' ', 'an', 'ne', 'ne', ' ', 'a', 'it'] },
       { text: 'Ata et annene ait.', syllables: ['A', 'ta', ' ', 'et', ' ', 'an', 'ne', 'ne', ' ', 'a', 'it'] },
-      { text: 'Ata annene ait.', syllables: ['A', 'ta', ' ', 'an', 'ne', 'ne', ' ', 'a', 'it'] },
-      { text: 'Ata ait.', syllables: ['A', 'ta', ' ', 'a', 'it'] },
-      { text: 'Ata', syllables: ['A', 'ta'] },
-
-      // === SAYFA 1 - PİRAMİT 2 (İnan Tat) ===
       { text: 'İnan', syllables: ['İ', 'nan'] },
       { text: 'İnan tat.', syllables: ['İ', 'nan', ' ', 'tat'] },
       { text: 'İnan eti tat.', syllables: ['İ', 'nan', ' ', 'e', 'ti', ' ', 'tat'] },
       { text: 'Tat İnan eti tat.', syllables: ['Tat', ' ', 'İ', 'nan', ' ', 'e', 'ti', ' ', 'tat'] },
-      { text: 'İnan eti tat.', syllables: ['İ', 'nan', ' ', 'e', 'ti', ' ', 'tat'] },
-      { text: 'İnan tat.', syllables: ['İ', 'nan', ' ', 'tat'] },
-      { text: 'İnan', syllables: ['İ', 'nan'] },
-
-      // === SAYFA 2 - PİRAMİT 3 (İnan Attan İn) ===
-      { text: 'İnan', syllables: ['İ', 'nan'] },
       { text: 'İnan in.', syllables: ['İ', 'nan', ' ', 'in'] },
       { text: 'İnan attan in.', syllables: ['İ', 'nan', ' ', 'at', 'tan', ' ', 'in'] },
-      { text: 'İn İnan attan in.', syllables: ['İn', ' ', 'İ', 'nan', ' ', 'at', 'tan', ' ', 'in'] },
-      { text: 'İnan attan in.', syllables: ['İ', 'nan', ' ', 'at', 'tan', ' ', 'in'] },
-      { text: 'İnan in.', syllables: ['İ', 'nan', ' ', 'in'] },
-      { text: 'İnan', syllables: ['İ', 'nan'] },
-
-      // === SAYFA 2 - PİRAMİT 4 (Tan İnat Etti) ===
       { text: 'Tan', syllables: ['Tan'] },
       { text: 'Tan etti.', syllables: ['Tan', ' ', 'et', 'ti'] },
       { text: 'Tan inat etti.', syllables: ['Tan', ' ', 'i', 'nat', ' ', 'et', 'ti'] },
-      { text: 'Tan annen inat etti.', syllables: ['Tan', ' ', 'an', 'nen', ' ', 'i', 'nat', ' ', 'et', 'ti'] },
-      { text: 'Tan inat etti.', syllables: ['Tan', ' ', 'i', 'nat', ' ', 'et', 'ti'] },
-      { text: 'Tan etti.', syllables: ['Tan', ' ', 'et', 'ti'] },
-      { text: 'Tan', syllables: ['Tan'] },
-
-      // Ekstra Alıştırmalar
-      { text: 'Anne teli elle.', syllables: ['An', 'ne', ' ', 'te', 'li', ' ', 'el', 'le'], focusLetter: 'l' },
-      { text: 'Ela naneli et tat.', syllables: ['E', 'la', ' ', 'na', 'ne', 'li', ' ', 'et', ' ', 'tat'], focusLetter: 'l' },
-      { text: 'Nene nane tat.', syllables: ['Ne', 'ne', ' ', 'na', 'ne', ' ', 'tat'] }
+      { text: 'Tan annen inat etti.', syllables: ['Tan', ' ', 'an', 'nen', ' ', 'i', 'nat', ' ', 'et', 'ti'] }
     ];
 
     // State
@@ -1287,8 +1379,22 @@
 
       if (showSyllables && currentItem.syllables && currentItem.syllables.length > 0) {
         displayElem.classList.add('syllable-colored');
-        const formattedSyllables = currentItem.syllables.map(s => applyCasing(s)).map(s => `<span>${s}</span>`);
-        displayElem.innerHTML = formattedSyllables.join('<span style="color:#94a3b8;margin:0 2px;">-</span>');
+        let html = '';
+        let lastWasSpace = true;
+        for (let i = 0; i < currentItem.syllables.length; i++) {
+          const s = currentItem.syllables[i];
+          if (s === ' ') {
+            html += '<span style="display:inline-block; width:10px;"> </span>';
+            lastWasSpace = true;
+          } else {
+            if (!lastWasSpace) {
+              html += '<span style="color:#94a3b8;margin:0 2px;font-weight:400;">-</span>';
+            }
+            html += `<span>${applyCasing(s)}</span>`;
+            lastWasSpace = false;
+          }
+        }
+        displayElem.innerHTML = html;
       } else {
         displayElem.classList.remove('syllable-colored');
         displayElem.textContent = applyCasing(wordText);
@@ -1681,7 +1787,7 @@
         for (let r of regs) r.update();
       });
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js?v=5').catch(() => {});
+        navigator.serviceWorker.register('sw.js?v=6').catch(() => {});
       });
     }
 
@@ -1698,11 +1804,87 @@
       window.location.replace(cleanUrl);
     }
 
+    /* GitHub Auto-Update Checker */
+    const CURRENT_VERSION = 'v1.0.3';
+    const GITHUB_REPO = 'lyldz/Harf-Tepsisi';
+    let latestReleaseData = null;
+
+    function compareVersions(v1, v2) {
+      const p1 = (v1 || '').replace(/^v/, '').split('.').map(n => parseInt(n, 10) || 0);
+      const p2 = (v2 || '').replace(/^v/, '').split('.').map(n => parseInt(n, 10) || 0);
+      for (let i = 0; i < Math.max(p1.length, p2.length); i++) {
+        const num1 = p1[i] || 0;
+        const num2 = p2[i] || 0;
+        if (num1 > num2) return 1;
+        if (num1 < num2) return -1;
+      }
+      return 0;
+    }
+
+    async function checkForGitHubUpdate(silent = false) {
+      const statusElem = document.getElementById('updateCheckStatusText');
+      if (statusElem) statusElem.textContent = "Denetleniyor...";
+
+      try {
+        const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases/latest`, {
+          cache: 'no-store'
+        });
+        if (!response.ok) {
+          if (statusElem) statusElem.textContent = `Güncel (${CURRENT_VERSION})`;
+          if (!silent) showToast(`Harf Tepsisi sürümü: ${CURRENT_VERSION}`);
+          return;
+        }
+
+        const data = await response.json();
+        latestReleaseData = data;
+        const latestTag = data.tag_name || '';
+
+        if (latestTag && compareVersions(latestTag, CURRENT_VERSION) > 0) {
+          if (statusElem) statusElem.innerHTML = `<span style="color:#16a34a; font-weight:800;">Yeni: ${latestTag}</span>`;
+          
+          const tagEl = document.getElementById('updateModalTag');
+          if (tagEl) tagEl.textContent = latestTag;
+          
+          const notesEl = document.getElementById('updateModalNotes');
+          if (notesEl && data.body) {
+            notesEl.textContent = data.body;
+          }
+          
+          document.getElementById('updateFoundModal').classList.add('open');
+          showToast(`🚀 Harf Tepsisi için yeni sürüm (${latestTag}) mevcut!`);
+        } else {
+          if (statusElem) statusElem.textContent = `Güncel (${CURRENT_VERSION})`;
+          if (!silent) {
+            showToast(`Harf Tepsisi en güncel sürümde (${CURRENT_VERSION}) 👍`);
+          }
+        }
+      } catch (err) {
+        console.warn('Update check failed:', err);
+        if (statusElem) statusElem.textContent = `Güncel (${CURRENT_VERSION})`;
+        if (!silent) {
+          showToast(`Harf Tepsisi sürümü: ${CURRENT_VERSION}`);
+        }
+      }
+    }
+
+    function downloadLatestApk() {
+      if (latestReleaseData && latestReleaseData.assets && latestReleaseData.assets.length > 0) {
+        const apkAsset = latestReleaseData.assets.find(a => a.name && a.name.endsWith('.apk')) || latestReleaseData.assets[0];
+        if (apkAsset && apkAsset.browser_download_url) {
+          window.location.href = apkAsset.browser_download_url;
+          return;
+        }
+      }
+      window.location.href = `https://github.com/${GITHUB_REPO}/releases/latest`;
+    }
+
     // Bootstrap
     window.addEventListener('DOMContentLoaded', () => {
       renderTrayTiles();
       buildQueue();
       showCurrentWord();
+      // Otomatik yeni sürüm sorgulama
+      setTimeout(() => checkForGitHubUpdate(true), 1500);
     });
   </script>
 </body>

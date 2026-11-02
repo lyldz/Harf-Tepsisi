@@ -10,8 +10,11 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>Harf Tepsisi (v1.0.3) - Ömer Asaf</title>
-  <link rel="manifest" href="manifest.json?v=103">
+  <title>Harf Tepsisi (v1.0.4) - Ömer Asaf</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="manifest" href="manifest.json?v=104">
   <style>
     :root {
       --bg-gradient-start: #e0f2fe;
@@ -70,13 +73,22 @@
     }
 
     .brand-icon {
-      font-size: 28px;
-      animation: bounce 2s infinite ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-logo-img {
+      height: 38px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.12));
+      animation: bounce 2.5s infinite ease-in-out;
     }
 
     @keyframes bounce {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
+      50% { transform: translateY(-4px); }
     }
 
     .brand-title {
@@ -651,7 +663,9 @@
   <!-- Top Header -->
   <header>
     <div class="brand-group">
-      <div class="brand-icon">🧺</div>
+      <div class="brand-icon">
+        <img src="icon.png" alt="Harf Tepsisi Logo" class="brand-logo-img">
+      </div>
       <div>
         <div class="brand-title">Harf Tepsisi</div>
         <div class="brand-subtitle">
@@ -679,7 +693,7 @@
 
   <!-- Live Version Notification Bar -->
   <div style="background:#0284c7; color:white; font-size:12px; font-weight:800; padding:6px 14px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 4px rgba(0,0,0,0.1); flex-wrap:wrap; gap:6px;">
-    <span>🚀 <strong>v1.0.3:</strong> 10 Yeni Piramit & Otomatik Güncelleme Eklendi!</span>
+    <span>🎨 <strong>v1.0.4:</strong> Yeni Harf Tepsisi Logosu & Uygulama İkonu Eklendi!</span>
     <div style="display:flex; gap:6px;">
       <button onclick="checkForGitHubUpdate(false)" style="background:#e0f2fe; color:#0369a1; border:none; padding:3px 8px; border-radius:999px; font-weight:800; font-size:11px; cursor:pointer;">
         Güncelleme Denetle 🔍
@@ -708,7 +722,7 @@
     <!-- Letter Tray Display (Tepsideki Harfler: a, n, e, t, i, l, o) -->
     <div class="tray-card">
       <div class="tray-info">
-        <span class="tray-title" id="trayTitleLabel">🧺 Tepsideki Harfler (Yeni: O):</span>
+        <span class="tray-title" id="trayTitleLabel"><img src="icon.png" alt="" style="height: 20px; width: auto; vertical-align: -3px; margin-right: 4px;">Tepsideki Harfler (Yeni: O):</span>
         <div class="tray-tiles" id="activeTrayLetters">
           <!-- Dynamically populated letters: A, N, E, T, İ, L, O -->
         </div>
@@ -786,7 +800,7 @@
   <div class="modal-overlay" id="letterModal">
     <div class="modal-card">
       <div class="modal-title">
-        <span>🧺</span>
+        <img src="icon.png" alt="" style="height: 28px; width: auto; vertical-align: middle;">
         <span>Harf Tepsisini Düzenle</span>
       </div>
       <p class="modal-desc">
@@ -811,7 +825,10 @@
   <!-- Settings & Speed Modal -->
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-card">
-      <div class="modal-title">
+      <div style="text-align: center; margin-bottom: 6px;">
+        <img src="logo.png" alt="Harf Tepsisi Logo" style="max-height: 65px; width: auto; object-fit: contain;">
+      </div>
+      <div class="modal-title" style="justify-content: center; font-size: 18px;">
         <span>⚙️</span>
         <span>Uygulama Ayarları</span>
       </div>
@@ -847,7 +864,7 @@
           <div style="background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:14px; padding:12px; display:flex; flex-direction:column; gap:8px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <span style="font-size:13px; font-weight:700;">Mevcut Sürüm:</span>
-              <strong style="color:#0284c7;" id="currentVersionLabel">v1.0.3</strong>
+              <strong style="color:#0284c7;" id="currentVersionLabel">v1.0.4</strong>
             </div>
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <span style="font-size:13px; font-weight:700;">Durum:</span>
@@ -879,14 +896,17 @@
   <!-- GitHub Auto Update Modal -->
   <div class="modal-overlay" id="updateFoundModal">
     <div class="modal-card" style="border-color:#22c55e;">
-      <div class="modal-title" style="color:#16a34a;">
+      <div style="text-align: center; margin-bottom: 6px;">
+        <img src="icon.png" alt="Harf Tepsisi" style="height: 52px; width: auto; object-fit: contain;">
+      </div>
+      <div class="modal-title" style="color:#16a34a; justify-content: center;">
         <span>🚀</span>
         <span>Yeni Güncelleme Mevcut!</span>
       </div>
       <div style="background:#f0fdf4; border:1.5px solid #86efac; border-radius:14px; padding:12px; margin:10px 0;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
           <span style="font-size:13px; font-weight:800; color:#166534;">Harf Tepsisi Yeni Sürüm:</span>
-          <span class="pill" id="updateModalTag" style="background:#dcfce7; border-color:#86efac; color:#166534; font-size:12px;">v1.0.3</span>
+          <span class="pill" id="updateModalTag" style="background:#dcfce7; border-color:#86efac; color:#166534; font-size:12px;">v1.0.4</span>
         </div>
         <div id="updateModalNotes" style="font-size:13px; color:#1e293b; line-height:1.4; max-height:160px; overflow-y:auto; white-space:pre-wrap;">Yeni özellikler ve hızlı okuma piramitleri eklendi!</div>
       </div>
@@ -1612,12 +1632,13 @@
       });
 
       const label = document.getElementById('trayTitleLabel');
+      const iconHtml = `<img src="icon.png" alt="" style="height: 20px; width: auto; vertical-align: -3px; margin-right: 4px;">`;
       if (activeLetters.has('o')) {
-        label.textContent = "🧺 Tepsideki Harfler (Yeni: O):";
+        label.innerHTML = `${iconHtml}Tepsideki Harfler (Yeni: O):`;
       } else if (activeLetters.has('l')) {
-        label.textContent = "🧺 Tepsideki Harfler (Yeni: L):";
+        label.innerHTML = `${iconHtml}Tepsideki Harfler (Yeni: L):`;
       } else {
-        label.textContent = "🧺 Tepsideki Harfler:";
+        label.innerHTML = `${iconHtml}Tepsideki Harfler:`;
       }
     }
 
@@ -1787,7 +1808,7 @@
         for (let r of regs) r.update();
       });
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js?v=6').catch(() => {});
+        navigator.serviceWorker.register('sw.js?v=7').catch(() => {});
       });
     }
 
@@ -1805,7 +1826,7 @@
     }
 
     /* GitHub Auto-Update Checker */
-    const CURRENT_VERSION = 'v1.0.3';
+    const CURRENT_VERSION = 'v1.0.4';
     const GITHUB_REPO = 'lyldz/Harf-Tepsisi';
     let latestReleaseData = null;
 

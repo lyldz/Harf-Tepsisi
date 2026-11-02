@@ -1,4 +1,4 @@
-const CACHE_NAME = 'harf-tepsisi-v6';
+const CACHE_NAME = 'harf-tepsisi-v7';
 
 self.addEventListener('install', (e) => {
   self.skipWaiting();

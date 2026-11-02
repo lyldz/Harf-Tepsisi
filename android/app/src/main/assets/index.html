@@ -10,7 +10,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>Harf Tepsisi (v1.0.4) - Ömer Asaf</title>
+  <title>Harf Tepsisi (v1.0.5) - Ömer Asaf</title>
   <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
   <link rel="apple-touch-icon" href="icon-192.png">
@@ -693,7 +693,7 @@
 
   <!-- Live Version Notification Bar -->
   <div style="background:#0284c7; color:white; font-size:12px; font-weight:800; padding:6px 14px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 4px rgba(0,0,0,0.1); flex-wrap:wrap; gap:6px;">
-    <span>🎨 <strong>v1.0.4:</strong> Yeni Harf Tepsisi Logosu & Uygulama İkonu Eklendi!</span>
+    <span>🎨 <strong>v1.0.5:</strong> Müfredatın 6 Yeni Harfi (K, U, R, I, M, Ü) ve Otomatik Güncelleme Eklendi!</span>
     <div style="display:flex; gap:6px;">
       <button onclick="checkForGitHubUpdate(false)" style="background:#e0f2fe; color:#0369a1; border:none; padding:3px 8px; border-radius:999px; font-weight:800; font-size:11px; cursor:pointer;">
         Güncelleme Denetle 🔍
@@ -807,13 +807,29 @@
         Ömer Asaf'ın öğrendiği harfleri seçin. Seçtiğiniz harflerden anlamlı kelimeler otomatik oluşturulur.
       </p>
 
+      <!-- Hızlı Müfredat Grubu Seçicileri -->
+      <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px;">
+        <span style="font-size: 12px; font-weight: 800; color: #475569;">🎯 Hızlı Müfredat Seçimi:</span>
+        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+          <button class="btn-secondary" onclick="setLetterPreset('aneto')" style="font-size: 11.5px; padding: 6px 10px; border-color: #0284c7; color: #0284c7; font-weight: 800;">
+            📘 ANETİLO (Varsayılan)
+          </button>
+          <button class="btn-secondary" onclick="setLetterPreset('kurim')" style="font-size: 11.5px; padding: 6px 10px; border-color: #16a34a; color: #16a34a; font-weight: 800;">
+            🚀 2. Grup (+K, U, R, I, M)
+          </button>
+          <button class="btn-secondary" onclick="setLetterPreset('six_new')" style="font-size: 11.5px; padding: 6px 10px; border-color: #d97706; color: #d97706; font-weight: 800;">
+            ✨ 6 Yeni Harf (+K, U, R, I, M, Ü)
+          </button>
+        </div>
+      </div>
+
       <div class="letters-grid" id="alphabetGrid">
         <!-- 29 Turkish letters generated via JS -->
       </div>
 
       <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; flex-wrap:wrap; gap:8px;">
         <button class="btn-secondary" onclick="resetToInitialLetters()">
-          🔄 Sıfırla (a, n, e, t, i, l, o)
+          🔄 Varsayılana Dön (a, n, e, t, i, l, o)
         </button>
         <button class="btn-read" style="padding: 10px 20px; font-size: 16px;" onclick="closeModal('letterModal')">
           Tamam 👍
@@ -864,7 +880,7 @@
           <div style="background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:14px; padding:12px; display:flex; flex-direction:column; gap:8px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <span style="font-size:13px; font-weight:700;">Mevcut Sürüm:</span>
-              <strong style="color:#0284c7;" id="currentVersionLabel">v1.0.4</strong>
+              <strong style="color:#0284c7;" id="currentVersionLabel">v1.0.5</strong>
             </div>
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <span style="font-size:13px; font-weight:700;">Durum:</span>
@@ -893,32 +909,45 @@
     </div>
   </div>
 
-  <!-- GitHub Auto Update Modal -->
+  <!-- GitHub Auto Update Modal (Tam Vakti Deneyimi - Müjde Modalı) -->
   <div class="modal-overlay" id="updateFoundModal">
-    <div class="modal-card" style="border-color:#22c55e;">
-      <div style="text-align: center; margin-bottom: 6px;">
-        <img src="icon.png" alt="Harf Tepsisi" style="height: 52px; width: auto; object-fit: contain;">
+    <div class="modal-card" style="border-color:#16a34a; max-width:440px; box-shadow:0 20px 40px rgba(0,0,0,0.25);">
+      <div style="text-align: center; margin-bottom: 4px;">
+        <img src="icon.png" alt="Harf Tepsisi" style="height: 60px; width: auto; object-fit: contain;">
       </div>
-      <div class="modal-title" style="color:#16a34a; justify-content: center;">
+      <div class="modal-title" style="color:#15803d; justify-content: center; font-size: 21px; font-weight: 900; text-align: center;">
+        <span>🎉</span>
+        <span>MÜJDE ÖMER ASAF!</span>
         <span>🚀</span>
-        <span>Yeni Güncelleme Mevcut!</span>
       </div>
-      <div style="background:#f0fdf4; border:1.5px solid #86efac; border-radius:14px; padding:12px; margin:10px 0;">
+      <p style="text-align:center; font-size:13px; color:#475569; margin:4px 0 10px 0; font-weight:700;">
+        Harf Tepsisi'ne Yepyeni Harfler, Kelimeler ve Özellikler Geldi!
+      </p>
+
+      <div style="background:#f0fdf4; border:1.5px solid #86efac; border-radius:14px; padding:12px; margin:8px 0;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-          <span style="font-size:13px; font-weight:800; color:#166534;">Harf Tepsisi Yeni Sürüm:</span>
-          <span class="pill" id="updateModalTag" style="background:#dcfce7; border-color:#86efac; color:#166534; font-size:12px;">v1.0.4</span>
+          <span style="font-size:13px; font-weight:800; color:#166534;">Yeni Sürüm:</span>
+          <span class="pill" id="updateModalTag" style="background:#dcfce7; border-color:#86efac; color:#166534; font-size:13px; font-weight:900;">v1.0.5</span>
         </div>
-        <div id="updateModalNotes" style="font-size:13px; color:#1e293b; line-height:1.4; max-height:160px; overflow-y:auto; white-space:pre-wrap;">Yeni özellikler ve hızlı okuma piramitleri eklendi!</div>
+        <div id="updateModalNotes" style="font-size:12.5px; color:#1e293b; line-height:1.45; max-height:160px; overflow-y:auto; white-space:pre-wrap;">Müfredattaki 6 yeni harf (K, U, R, I, M, Ü) ve çalışma yaprakları eklendi!</div>
       </div>
 
-      <div style="display:flex; flex-direction:column; gap:8px; margin-top:14px;">
-        <button class="btn-read" id="btnDownloadApk" onclick="downloadLatestApk()" style="padding:12px 18px; font-size:17px; width:100%;">
-          <span>📲 Yeni APK'yı İndir ve Kur</span>
+      <!-- Real-time Download Progress Area (Tam Vakti Stili) -->
+      <div id="modalUpdateProgressArea" style="display:none; margin:10px 0; background:#f8fafc; padding:12px; border-radius:14px; border:1.5px solid #cbd5e1;">
+        <div style="background:#e2e8f0; height:12px; border-radius:999px; overflow:hidden;">
+          <div id="modalUpdateProgressBar" style="background:linear-gradient(90deg, #16a34a, #22c55e); width:0%; height:100%; transition:width 0.15s ease;"></div>
+        </div>
+        <div id="modalUpdateProgressStatus" style="font-size:12px; font-weight:800; text-align:center; color:#166534; margin-top:6px;">İndiriliyor... %0</div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:8px; margin-top:12px;">
+        <button class="btn-read" id="modalBtnStartUpdate" onclick="downloadLatestApk()" style="padding:12px 18px; font-size:16px; width:100%; justify-content:center;">
+          <span>⚡ Şimdi Güncelle ve Yükle 🚀</span>
         </button>
-        <button class="btn-secondary" onclick="forceCleanReload()" style="justify-content:center; padding:10px;">
-          <span>⚡ Web Sürümünü Hemen Yenile</span>
+        <button class="btn-secondary" onclick="forceCleanReload()" style="justify-content:center; padding:9px; font-size:13px;">
+          <span>🔄 Web Sürümünü Yenile</span>
         </button>
-        <button class="btn-secondary" onclick="closeModal('updateFoundModal')" style="justify-content:center; border:none; color:#64748b;">
+        <button class="btn-secondary" onclick="closeModal('updateFoundModal')" style="justify-content:center; border:none; color:#64748b; font-size:13px;">
           Daha Sonra
         </button>
       </div>
@@ -936,6 +965,22 @@
        ========================================================= */
 
     const TURKISH_ALPHABET = ['a', 'b', 'c', 'ç', 'd', 'e', 'f', 'g', 'ğ', 'h', 'ı', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'ö', 'p', 'r', 's', 'ş', 't', 'u', 'ü', 'v', 'y', 'z'];
+    
+    // MEB 2024 Maarif Modeli Müfredat Sırası:
+    // 1. Grup: A - N - E - T - İ - L
+    // 2. Grup: O - K - U - R - I - M
+    // 3. Grup: Ü - S - Ö - Y - D - Z
+    const CURRICULUM_ORDER = ['a', 'n', 'e', 't', 'i', 'l', 'o', 'k', 'u', 'r', 'ı', 'm', 'ü', 's'];
+
+    function getActiveFocusLetter() {
+      for (let i = CURRICULUM_ORDER.length - 1; i >= 0; i--) {
+        const char = CURRICULUM_ORDER[i];
+        if (activeLetters.has(char)) {
+          return char;
+        }
+      }
+      return 'o';
+    }
 
     // Active letters including O: a, n, e, t, i, l, o
     let activeLetters = new Set(['a', 'n', 'e', 't', 'i', 'l', 'o']);
@@ -1048,30 +1093,148 @@
       { word: 'koli', syllables: ['ko', 'li'], desc: 'koli' },
       { word: 'kilo', syllables: ['ki', 'lo'], desc: 'kilo' },
       { word: 'konak', syllables: ['ko', 'nak'], desc: 'konak' },
-      { word: 'kol', syllables: ['kol'], desc: 'kol' },
-      { word: 'tokat', syllables: ['to', 'kat'], desc: 'tokat' },
-      { word: 'otlak', syllables: ['ot', 'lak'], desc: 'otlak' },
-      { word: 'nokta', syllables: ['nok', 'ta'], desc: 'nokta' },
-      { word: 'ek', syllables: ['ek'], desc: 'ek' },
-      { word: 'kek', syllables: ['kek'], desc: 'kek' },
-      { word: 'kale', syllables: ['ka', 'le'], desc: 'kale' },
-      { word: 'kedi', syllables: ['ke', 'di'], desc: 'kedi' },
-      // 'u' harfi eklenirse:
-      { word: 'un', syllables: ['un'], desc: 'un' },
-      { word: 'onlu', syllables: ['on', 'lu'], desc: 'onlu' },
-      { word: 'otlu', syllables: ['ot', 'lu'], desc: 'otlu' },
-      { word: 'tut', syllables: ['tut'], desc: 'tut' },
-      { word: 'kutu', syllables: ['ku', 'tu'], desc: 'kutu' },
-      { word: 'okul', syllables: ['o', 'kul'], desc: 'okul' },
-      // 'r' harfi eklenirse:
-      { word: 'nar', syllables: ['nar'], desc: 'nar' },
-      { word: 'orta', syllables: ['or', 'ta'], desc: 'orta' },
-      { word: 'orman', syllables: ['or', 'man'], desc: 'orman' },
-      { word: 'renk', syllables: ['renk'], desc: 'renk' },
-      // 'm' harfi eklenirse:
-      { word: 'mor', syllables: ['mor'], desc: 'mor' },
-      { word: 'limon', syllables: ['li', 'mon'], desc: 'limon' },
-      { word: 'elma', syllables: ['el', 'ma'], desc: 'elma' }
+      // === 'K' HARFİ İLE KELİMELER (2. Grup 1. Harf) ===
+      { word: 'ek', syllables: ['ek'], desc: 'ek (eklemek)', focusLetter: 'k' },
+      { word: 'ak', syllables: ['ak'], desc: 'ak (beyaz renk)', focusLetter: 'k' },
+      { word: 'ok', syllables: ['ok'], desc: 'ok (yay ve ok)', focusLetter: 'k' },
+      { word: 'iki', syllables: ['i', 'ki'], desc: 'iki (2 sayısı)', focusLetter: 'k' },
+      { word: 'kek', syllables: ['kek'], desc: 'kek (tatlı kek)', focusLetter: 'k' },
+      { word: 'tek', syllables: ['tek'], desc: 'tek (bir tane / tek sayı)', focusLetter: 'k' },
+      { word: 'kol', syllables: ['kol'], desc: 'kol (vücudun kolu)', focusLetter: 'k' },
+      { word: 'koli', syllables: ['ko', 'li'], desc: 'koli (paket koli)', focusLetter: 'k' },
+      { word: 'kilo', syllables: ['ki', 'lo'], desc: 'kilo (ağırlık birimi)', focusLetter: 'k' },
+      { word: 'kale', syllables: ['ka', 'le'], desc: 'kale (futbol kalesi / tarihi kale)', focusLetter: 'k' },
+      { word: 'kene', syllables: ['ke', 'ne'], desc: 'kene', focusLetter: 'k' },
+      { word: 'etek', syllables: ['e', 'tek'], desc: 'etek (giysi)', focusLetter: 'k' },
+      { word: 'leke', syllables: ['le', 'ke'], desc: 'leke (kir lekesi)', focusLetter: 'k' },
+      { word: 'toka', syllables: ['to', 'ka'], desc: 'toka (saç tokası)', focusLetter: 'k' },
+      { word: 'konak', syllables: ['ko', 'nak'], desc: 'konak (büyük ev)', focusLetter: 'k' },
+      { word: 'ekle', syllables: ['ek', 'le'], desc: 'ekle (ilave et)', focusLetter: 'k' },
+      { word: 'eklet', syllables: ['ek', 'let'], desc: 'eklet', focusLetter: 'k' },
+      { word: 'ekti', syllables: ['ek', 'ti'], desc: 'ekti (tohum ekti)', focusLetter: 'k' },
+      { word: 'antik', syllables: ['an', 'tik'], desc: 'antik (tarihi eski)', focusLetter: 'k' },
+      { word: 'kalan', syllables: ['ka', 'lan'], desc: 'kalan', focusLetter: 'k' },
+      { word: 'kalite', syllables: ['ka', 'li', 'te'], desc: 'kalite (iyi nitelik)', focusLetter: 'k' },
+      { word: 'kalkan', syllables: ['kal', 'kan'], desc: 'kalkan (koruyucu kalkan)', focusLetter: 'k' },
+      { word: 'kilit', syllables: ['ki', 'lit'], desc: 'kilit (kapı kilidi)', focusLetter: 'k' },
+      { word: 'nokta', syllables: ['nok', 'ta'], desc: 'nokta (cümle sonu noktası)', focusLetter: 'k' },
+      { word: 'lokanta', syllables: ['lo', 'kan', 'ta'], desc: 'lokanta (yemek yeri)', focusLetter: 'k' },
+      { word: 'atletik', syllables: ['at', 'le', 'tik'], desc: 'atletik (çevik sporcu)', focusLetter: 'k' },
+      { word: 'Kenan', syllables: ['Ke', 'nan'], desc: 'Kenan (isim)', focusLetter: 'k' },
+      { word: 'Kaan', syllables: ['Ka', 'an'], desc: 'Kaan (isim)', focusLetter: 'k' },
+
+      // === 'U' HARFİ İLE KELİMELER (2. Grup 2. Harf) ===
+      { word: 'un', syllables: ['un'], desc: 'un (ekmek unu)', focusLetter: 'u' },
+      { word: 'onlu', syllables: ['on', 'lu'], desc: 'onlu', focusLetter: 'u' },
+      { word: 'otlu', syllables: ['ot', 'lu'], desc: 'otlu (otlu peynir)', focusLetter: 'u' },
+      { word: 'tut', syllables: ['tut'], desc: 'tut (yakala)', focusLetter: 'u' },
+      { word: 'tutu', syllables: ['tu', 'tu'], desc: 'tutu (bale eteği)', focusLetter: 'u' },
+      { word: 'kutu', syllables: ['ku', 'tu'], desc: 'kutu (karton kutu)', focusLetter: 'u' },
+      { word: 'okul', syllables: ['o', 'kul'], desc: 'okul (eğitim yuvası)', focusLetter: 'u' },
+      { word: 'koku', syllables: ['ko', 'ku'], desc: 'koku (güzel koku)', focusLetter: 'u' },
+      { word: 'kulu', syllables: ['ku', 'lu'], desc: 'kulu (Kulu ilçesi / yavru)', focusLetter: 'u' },
+      { word: 'kule', syllables: ['ku', 'le'], desc: 'kule (yüksek kule)', focusLetter: 'u' },
+      { word: 'ulu', syllables: ['u', 'lu'], desc: 'ulu (yüce büyük)', focusLetter: 'u' },
+      { word: 'unut', syllables: ['u', 'nut'], desc: 'unut', focusLetter: 'u' },
+      { word: 'unlu', syllables: ['un', 'lu'], desc: 'unlu', focusLetter: 'u' },
+      { word: 'Utku', syllables: ['Ut', 'ku'], desc: 'Utku (isim / zafer)', focusLetter: 'u' },
+      { word: 'konu', syllables: ['ko', 'nu'], desc: 'konu (ders konusu)', focusLetter: 'u' },
+      { word: 'koltuk', syllables: ['kol', 'tuk'], desc: 'koltuk (rahat sandalye)', focusLetter: 'u' },
+      { word: 'kutla', syllables: ['kut', 'la'], desc: 'kutla (tebrik et)', focusLetter: 'u' },
+      { word: 'kutlu', syllables: ['kut', 'lu'], desc: 'kutlu (uğurlu mutlu)', focusLetter: 'u' },
+      { word: 'tutkal', syllables: ['tut', 'kal'], desc: 'tutkal (yapıştırıcı)', focusLetter: 'u' },
+
+      // === 'R' HARFİ İLE KELİMELER (2. Grup 3. Harf) ===
+      { word: 'ar', syllables: ['ar'], desc: 'ar (ölçü birimi)', focusLetter: 'r' },
+      { word: 'er', syllables: ['er'], desc: 'er (asker)', focusLetter: 'r' },
+      { word: 'iri', syllables: ['i', 'ri'], desc: 'iri (büyük iri taş)', focusLetter: 'r' },
+      { word: 'nar', syllables: ['nar'], desc: 'nar (kırmızı meyve)', focusLetter: 'r' },
+      { word: 'orta', syllables: ['or', 'ta'], desc: 'orta (merkez)', focusLetter: 'r' },
+      { word: 'kare', syllables: ['ka', 're'], desc: 'kare (dörtgen şekil)', focusLetter: 'r' },
+      { word: 'tarak', syllables: ['ta', 'rak'], desc: 'tarak (saç tarağı)', focusLetter: 'r' },
+      { word: 'kartal', syllables: ['kar', 'tal'], desc: 'kartal (kuş)', focusLetter: 'r' },
+      { word: 'renk', syllables: ['renk'], desc: 'renk (renkli)', focusLetter: 'r' },
+      { word: 'kor', syllables: ['kor'], desc: 'kor (kırmızı ateş)', focusLetter: 'r' },
+      { word: 'tur', syllables: ['tur'], desc: 'tur (gezi)', focusLetter: 'r' },
+      { word: 'kurt', syllables: ['kurt'], desc: 'kurt (hayvan)', focusLetter: 'r' },
+      { word: 'tren', syllables: ['tren'], desc: 'tren (demiryolu aracı)', focusLetter: 'r' },
+      { word: 'rota', syllables: ['ro', 'ta'], desc: 'rota (yol yönü)', focusLetter: 'r' },
+      { word: 'roket', syllables: ['ro', 'ket'], desc: 'roket (uzay roketi)', focusLetter: 'r' },
+      { word: 'karton', syllables: ['kar', 'ton'], desc: 'karton', focusLetter: 'r' },
+      { word: 'İlker', syllables: ['İl', 'ker'], desc: 'İlker (isim)', focusLetter: 'r' },
+      { word: 'Rana', syllables: ['Ra', 'na'], desc: 'Rana (isim)', focusLetter: 'r' },
+      { word: 'Taner', syllables: ['Ta', 'ner'], desc: 'Taner (isim)', focusLetter: 'r' },
+      { word: 'kral', syllables: ['kral'], desc: 'kral', focusLetter: 'r' },
+      { word: 'erik', syllables: ['e', 'rik'], desc: 'erik (yeşil meyve)', focusLetter: 'r' },
+      { word: 'raket', syllables: ['ra', 'ket'], desc: 'raket (tenis raketi)', focusLetter: 'r' },
+      { word: 'torun', syllables: ['to', 'run'], desc: 'torun (dedenin torunu)', focusLetter: 'r' },
+
+      // === 'I' (Noktasız I) HARFİ İLE KELİMELER (2. Grup 4. Harf) ===
+      { word: 'ılık', syllables: ['ı', 'lık'], desc: 'ılık (ne sıcak ne soğuk)', focusLetter: 'ı' },
+      { word: 'altı', syllables: ['al', 'tı'], desc: 'altı (6 sayısı)', focusLetter: 'ı' },
+      { word: 'atı', syllables: ['a', 'tı'], desc: 'atı (beyaz atı)', focusLetter: 'ı' },
+      { word: 'atıl', syllables: ['a', 'tıl'], desc: 'atıl (harekete geç)', focusLetter: 'ı' },
+      { word: 'arı', syllables: ['a', 'rı'], desc: 'arı (bal yapan arı)', focusLetter: 'ı' },
+      { word: 'katı', syllables: ['ka', 'tı'], desc: 'katı (sert cisim)', focusLetter: 'ı' },
+      { word: 'kıtlık', syllables: ['kıt', 'lık'], desc: 'kıtlık', focusLetter: 'ı' },
+      { word: 'tatlı', syllables: ['tat', 'lı'], desc: 'tatlı (lezzetli tatlı)', focusLetter: 'ı' },
+      { word: 'anlatı', syllables: ['an', 'la', 'tı'], desc: 'anlatı (hikaye)', focusLetter: 'ı' },
+      { word: 'tanık', syllables: ['ta', 'nık'], desc: 'tanık (gören kişi)', focusLetter: 'ı' },
+      { word: 'tarla', syllables: ['tar', 'la'], desc: 'tarla (ekin tarlası)', focusLetter: 'ı' },
+      { word: 'atkı', syllables: ['at', 'kı'], desc: 'atkı (boyun atkısı)', focusLetter: 'ı' },
+      { word: 'tıkır', syllables: ['tı', 'kır'], desc: 'tıkır (tıkır tıkır)', focusLetter: 'ı' },
+      { word: 'kırk', syllables: ['kırk'], desc: 'kırk (40 sayısı)', focusLetter: 'ı' },
+      { word: 'anıt', syllables: ['a', 'nıt'], desc: 'anıt (tarihi anıt)', focusLetter: 'ı' },
+      { word: 'kıta', syllables: ['kı', 'ta'], desc: 'kıta (yeryüzü kıtası)', focusLetter: 'ı' },
+      { word: 'tanıt', syllables: ['ta', 'nıt'], desc: 'tanıt (tanıtmak)', focusLetter: 'ı' },
+      { word: 'akıl', syllables: ['a', 'kıl'], desc: 'akıl (zekâ)', focusLetter: 'ı' },
+      { word: 'akıllı', syllables: ['a', 'kıl', 'lı'], desc: 'akıllı', focusLetter: 'ı' },
+      { word: 'tırtıl', syllables: ['tır', 'tıl'], desc: 'tırtıl (yeşil böcek)', focusLetter: 'ı' },
+
+      // === 'M' HARFİ İLE KELİMELER (2. Grup 5. Harf) ===
+      { word: 'elma', syllables: ['el', 'ma'], desc: 'elma (kırmızı elma)', focusLetter: 'm' },
+      { word: 'limon', syllables: ['li', 'mon'], desc: 'limon (sarı limon)', focusLetter: 'm' },
+      { word: 'mor', syllables: ['mor'], desc: 'mor (renk)', focusLetter: 'm' },
+      { word: 'kalem', syllables: ['ka', 'lem'], desc: 'kalem (yazı kalemi)', focusLetter: 'm' },
+      { word: 'mama', syllables: ['ma', 'ma'], desc: 'mama (bebek maması)', focusLetter: 'm' },
+      { word: 'makarna', syllables: ['ma', 'kar', 'na'], desc: 'makarna (yemek)', focusLetter: 'm' },
+      { word: 'kum', syllables: ['kum'], desc: 'kum (deniz kumu)', focusLetter: 'm' },
+      { word: 'kumral', syllables: ['kum', 'ral'], desc: 'kumral (saç rengi)', focusLetter: 'm' },
+      { word: 'minik', syllables: ['mi', 'nik'], desc: 'minik (küçük sevimli)', focusLetter: 'm' },
+      { word: 'mantar', syllables: ['man', 'tar'], desc: 'mantar (ormandaki mantar)', focusLetter: 'm' },
+      { word: 'motor', syllables: ['mo', 'tor'], desc: 'motor (araç motoru)', focusLetter: 'm' },
+      { word: 'lokum', syllables: ['lo', 'kum'], desc: 'lokum (tatlı lokum)', focusLetter: 'm' },
+      { word: 'tamir', syllables: ['ta', 'mir'], desc: 'tamir (onarma)', focusLetter: 'm' },
+      { word: 'martı', syllables: ['mar', 'tı'], desc: 'martı (deniz kuşu)', focusLetter: 'm' },
+      { word: 'orman', syllables: ['or', 'man'], desc: 'orman (yeşil ağaçlar)', focusLetter: 'm' },
+      { word: 'mum', syllables: ['mum'], desc: 'mum (ışık veren mum)', focusLetter: 'm' },
+      { word: 'armut', syllables: ['ar', 'mut'], desc: 'armut (sulu meyve)', focusLetter: 'm' },
+      { word: 'Mert', syllables: ['Mert'], desc: 'Mert (isim)', focusLetter: 'm' },
+      { word: 'Mine', syllables: ['Mi', 'ne'], desc: 'Mine (isim)', focusLetter: 'm' },
+      { word: 'Melek', syllables: ['Me', 'lek'], desc: 'Melek (isim)', focusLetter: 'm' },
+      { word: 'Metin', syllables: ['Me', 'tin'], desc: 'Metin (isim / yazı metni)', focusLetter: 'm' },
+      { word: 'Murat', syllables: ['Mu', 'rat'], desc: 'Murat (isim)', focusLetter: 'm' },
+      { word: 'maraton', syllables: ['ma', 'ra', 'ton'], desc: 'maraton (koşu yarışı)', focusLetter: 'm' },
+
+      // === 'Ü' HARFİ İLE KELİMELER (3. Grup 1. Harf - 6. Yeni Harf) ===
+      { word: 'ün', syllables: ['ün'], desc: 'ün (şöhret, tanınma)', focusLetter: 'ü' },
+      { word: 'ütü', syllables: ['ü', 'tü'], desc: 'ütü (kıyafet ütüsü)', focusLetter: 'ü' },
+      { word: 'ülke', syllables: ['ül', 'ke'], desc: 'ülke (vatan)', focusLetter: 'ü' },
+      { word: 'kütük', syllables: ['kü', 'tük'], desc: 'kütük (ağaç kütüğü)', focusLetter: 'ü' },
+      { word: 'kürek', syllables: ['kü', 'rek'], desc: 'kürek (kum küreği)', focusLetter: 'ü' },
+      { word: 'tül', syllables: ['tül'], desc: 'tül (tül perde)', focusLetter: 'ü' },
+      { word: 'ümit', syllables: ['ü', 'mit'], desc: 'ümit (umut etmek)', focusLetter: 'ü' },
+      { word: 'tünel', syllables: ['tü', 'nel'], desc: 'tünel (dağ tüneli)', focusLetter: 'ü' },
+      { word: 'tür', syllables: ['tür'], desc: 'tür (çeşit)', focusLetter: 'ü' },
+      { word: 'küme', syllables: ['kü', 'me'], desc: 'küme (topluluk)', focusLetter: 'ü' },
+      { word: 'kürk', syllables: ['kürk'], desc: 'kürk', focusLetter: 'ü' },
+      { word: 'türkü', syllables: ['tür', 'kü'], desc: 'türkü (güzel şarkı)', focusLetter: 'ü' },
+      { word: 'ütülü', syllables: ['ü', 'tü', 'lü'], desc: 'ütülü (düzgün giysi)', focusLetter: 'ü' },
+      { word: 'kütle', syllables: ['küt', 'le'], desc: 'kütle (madde miktarı)', focusLetter: 'ü' },
+      { word: 'kültür', syllables: ['kül', 'tür'], desc: 'kültür (bilgi ve gelenek)', focusLetter: 'ü' },
+      { word: 'Ünal', syllables: ['Ü', 'nal'], desc: 'Ünal (isim)', focusLetter: 'ü' },
+      { word: 'Ümit', syllables: ['Ü', 'mit'], desc: 'Ümit (isim)', focusLetter: 'ü' },
+      { word: 'türüm', syllables: ['tü', 'rüm'], desc: 'türüm' }
     ];
 
     // Pyramid Sentences Directly From The Worksheets + O & L Piramitleri
@@ -1195,6 +1358,65 @@
       { text: 'Nalan not al.', syllables: ['Na', 'lan', ' ', 'not', ' ', 'al'], focusLetter: 'o' },
       { text: 'Nalan nota al.', syllables: ['Na', 'lan', ' ', 'no', 'ta', ' ', 'al'], focusLetter: 'o' },
 
+      // === 'K' HARFİ İLE PİRAMİT ÇALIŞMALARI ===
+      { text: 'Kek', syllables: ['Kek'], focusLetter: 'k' },
+      { text: 'Kek al.', syllables: ['Kek', ' ', 'al.'], focusLetter: 'k' },
+      { text: 'Ela kek al.', syllables: ['E', 'la', ' ', 'kek', ' ', 'al.'], focusLetter: 'k' },
+      { text: 'Ela iki kek al.', syllables: ['E', 'la', ' ', 'i', 'ki', ' ', 'kek', ' ', 'al.'], focusLetter: 'k' },
+      { text: 'Ela kakaolu kek al.', syllables: ['E', 'la', ' ', 'ka', 'ka', 'o', 'lu', ' ', 'kek', ' ', 'al.'], focusLetter: 'k' },
+      { text: 'Kale', syllables: ['Ka', 'le'], focusLetter: 'k' },
+      { text: 'Kale kur.', syllables: ['Ka', 'le', ' ', 'kur.'], focusLetter: 'k' },
+      { text: 'Kenan kale kur.', syllables: ['Ke', 'nan', ' ', 'ka', 'le', ' ', 'kur.'], focusLetter: 'k' },
+      { text: 'Kenan iki kale kur.', syllables: ['Ke', 'nan', ' ', 'i', 'ki', ' ', 'ka', 'le', ' ', 'kur.'], focusLetter: 'k' },
+
+      // === 'U' HARFİ İLE PİRAMİT ÇALIŞMALARI ===
+      { text: 'Okul', syllables: ['O', 'kul'], focusLetter: 'u' },
+      { text: 'Okula git.', syllables: ['O', 'ku', 'la', ' ', 'git.'], focusLetter: 'u' },
+      { text: 'Utku okula git.', syllables: ['Ut', 'ku', ' ', 'o', 'ku', 'la', ' ', 'git.'], focusLetter: 'u' },
+      { text: 'Utku koşa koşa okula git.', syllables: ['Ut', 'ku', ' ', 'ko', 'şa', ' ', 'ko', 'şa', ' ', 'o', 'ku', 'la', ' ', 'git.'], focusLetter: 'u' },
+      { text: 'Kutu', syllables: ['Ku', 'tu'], focusLetter: 'u' },
+      { text: 'Kutu al.', syllables: ['Ku', 'tu', ' ', 'al.'], focusLetter: 'u' },
+      { text: 'Utku kutu al.', syllables: ['Ut', 'ku', ' ', 'ku', 'tu', ' ', 'al.'], focusLetter: 'u' },
+      { text: 'Utku iki kutu lokum al.', syllables: ['Ut', 'ku', ' ', 'i', 'ki', ' ', 'ku', 'tu', ' ', 'lo', 'kum', ' ', 'al.'], focusLetter: 'u' },
+
+      // === 'R' HARFİ İLE PİRAMİT ÇALIŞMALARI ===
+      { text: 'Kartal', syllables: ['Kar', 'tal'], focusLetter: 'r' },
+      { text: 'Kartal kondu.', syllables: ['Kar', 'tal', ' ', 'kon', 'du.'], focusLetter: 'r' },
+      { text: 'İri kartal kondu.', syllables: ['İ', 'ri', ' ', 'kar', 'tal', ' ', 'kon', 'du.'], focusLetter: 'r' },
+      { text: 'İri kartal tarlaya kondu.', syllables: ['İ', 'ri', ' ', 'kar', 'tal', ' ', 'tar', 'la', 'ya', ' ', 'kon', 'du.'], focusLetter: 'r' },
+      { text: 'Tarak', syllables: ['Ta', 'rak'], focusLetter: 'r' },
+      { text: 'Tarak al.', syllables: ['Ta', 'rak', ' ', 'al.'], focusLetter: 'r' },
+      { text: 'Rana tarak al.', syllables: ['Ra', 'na', ' ', 'ta', 'rak', ' ', 'al.'], focusLetter: 'r' },
+      { text: 'Rana renkli tarak al.', syllables: ['Ra', 'na', ' ', 'renk', 'li', ' ', 'ta', 'rak', ' ', 'al.'], focusLetter: 'r' },
+
+      // === 'I' HARFİ İLE PİRAMİT ÇALIŞMALARI ===
+      { text: 'Ilık', syllables: ['I', 'lık'], focusLetter: 'ı' },
+      { text: 'Ilık süt.', syllables: ['I', 'lık', ' ', 'süt.'], focusLetter: 'ı' },
+      { text: 'Asaf ılık süt iç.', syllables: ['A', 'saf', ' ', 'ı', 'lık', ' ', 'süt', ' ', 'iç.'], focusLetter: 'ı' },
+      { text: 'Tatlı', syllables: ['Tat', 'lı'], focusLetter: 'ı' },
+      { text: 'Tatlı tat.', syllables: ['Tat', 'lı', ' ', 'tat.'], focusLetter: 'ı' },
+      { text: 'Annenle tatlı tat.', syllables: ['An', 'nen', 'le', ' ', 'tat', 'lı', ' ', 'tat.'], focusLetter: 'ı' },
+      { text: 'Akşam annenle tatlı tat.', syllables: ['Ak', 'şam', ' ', 'an', 'nen', 'le', ' ', 'tat', 'lı', ' ', 'tat.'], focusLetter: 'ı' },
+
+      // === 'M' HARFİ İLE PİRAMİT ÇALIŞMALARI ===
+      { text: 'Elma', syllables: ['El', 'ma'], focusLetter: 'm' },
+      { text: 'Elma al.', syllables: ['El', 'ma', ' ', 'al.'], focusLetter: 'm' },
+      { text: 'Mert elma al.', syllables: ['Mert', ' ', 'el', 'ma', ' ', 'al.'], focusLetter: 'm' },
+      { text: 'Mert kırmızı elma al.', syllables: ['Mert', ' ', 'kır', 'mı', 'zı', ' ', 'el', 'ma', ' ', 'al.'], focusLetter: 'm' },
+      { text: 'Kalem', syllables: ['Ka', 'lem'], focusLetter: 'm' },
+      { text: 'Kalem al.', syllables: ['Ka', 'lem', ' ', 'al.'], focusLetter: 'm' },
+      { text: 'Mine kalem al.', syllables: ['Mi', 'ne', ' ', 'ka', 'lem', ' ', 'al.'], focusLetter: 'm' },
+      { text: 'Mine iki minik kalem al.', syllables: ['Mi', 'ne', ' ', 'i', 'ki', ' ', 'mi', 'nik', ' ', 'ka', 'lem', ' ', 'al.'], focusLetter: 'm' },
+
+      // === 'Ü' HARFİ İLE PİRAMİT ÇALIŞMALARI ===
+      { text: 'Ütü', syllables: ['Ü', 'tü'], focusLetter: 'ü' },
+      { text: 'Ütü yap.', syllables: ['Ü', 'tü', ' ', 'yap.'], focusLetter: 'ü' },
+      { text: 'Tülüne ütü yap.', syllables: ['Tü', 'lü', 'ne', ' ', 'ü', 'tü', ' ', 'yap.'], focusLetter: 'ü' },
+      { text: 'Anne tülüne ütü yap.', syllables: ['An', 'ne', ' ', 'tü', 'lü', 'ne', ' ', 'ü', 'tü', ' ', 'yap.'], focusLetter: 'ü' },
+      { text: 'Tünel', syllables: ['Tü', 'nel'], focusLetter: 'ü' },
+      { text: 'Tünel aç.', syllables: ['Tü', 'nel', ' ', 'aç.'], focusLetter: 'ü' },
+      { text: 'Tren tünelden geçti.', syllables: ['Tren', ' ', 'tü', 'nel', 'den', ' ', 'geç', 'ti.'], focusLetter: 'ü' },
+
       // === İLK ÇALIŞMALAR (Ata & İnan Piramitleri) ===
       { text: 'Ata', syllables: ['A', 'ta'] },
       { text: 'Ata ait.', syllables: ['A', 'ta', ' ', 'a', 'it'] },
@@ -1316,33 +1538,33 @@
     }
 
     function buildQueue() {
+      const focusChar = getActiveFocusLetter();
       if (appMode === 'words') {
         const matchingWords = MASTER_DICTIONARY.filter(item => 
           canMakeWordWithLetters(item.word, activeLetters)
         );
 
-        // Highlight priority: Words with 'o' if 'o' is selected, otherwise 'l', otherwise shuffle
-        const oWords = matchingWords.filter(item => item.word.toLocaleLowerCase('tr-TR').includes('o')).sort(() => Math.random() - 0.5);
-        const lWords = matchingWords.filter(item => !item.word.toLocaleLowerCase('tr-TR').includes('o') && item.word.toLocaleLowerCase('tr-TR').includes('l')).sort(() => Math.random() - 0.5);
-        const basicWords = matchingWords.filter(item => !item.word.toLocaleLowerCase('tr-TR').includes('o') && !item.word.toLocaleLowerCase('tr-TR').includes('l')).sort(() => Math.random() - 0.5);
+        // Yeni eklenen harfleri içeren kelimeleri önceliklendir
+        const focusWords = matchingWords.filter(item => item.word.toLocaleLowerCase('tr-TR').includes(focusChar)).sort(() => Math.random() - 0.5);
+        const otherWords = matchingWords.filter(item => !item.word.toLocaleLowerCase('tr-TR').includes(focusChar)).sort(() => Math.random() - 0.5);
 
-        // Interleave so child practices new letters frequently but with fun variety
+        // Çocuğun yeni harfi sık görüp pekiştirmesi için harmanla
         const mixed = [];
-        const maxLen = Math.max(oWords.length, lWords.length, basicWords.length);
-        for (let i = 0; i < maxLen; i++) {
-          if (i < oWords.length) mixed.push(oWords[i]);
-          if (i < lWords.length) mixed.push(lWords[i]);
-          if (i < basicWords.length) mixed.push(basicWords[i]);
+        let fIdx = 0, oIdx = 0;
+        while (fIdx < focusWords.length || oIdx < otherWords.length) {
+          if (fIdx < focusWords.length) mixed.push(focusWords[fIdx++]);
+          if (oIdx < otherWords.length) mixed.push(otherWords[oIdx++]);
+          if (fIdx < focusWords.length) mixed.push(focusWords[fIdx++]);
+          if (oIdx < otherWords.length) mixed.push(otherWords[oIdx++]);
         }
         currentQueue = mixed.length > 0 ? mixed : matchingWords;
       } else {
         const matchingPyramids = PYRAMID_SENTENCES.filter(item =>
           canMakeWordWithLetters(item.text, activeLetters)
         );
-        // Interleave pyramids containing 'o'
-        const oPyramids = matchingPyramids.filter(item => item.text.toLocaleLowerCase('tr-TR').includes('o'));
-        const otherPyramids = matchingPyramids.filter(item => !item.text.toLocaleLowerCase('tr-TR').includes('o'));
-        currentQueue = [...oPyramids, ...otherPyramids];
+        const focusPyramids = matchingPyramids.filter(item => item.text.toLocaleLowerCase('tr-TR').includes(focusChar));
+        const otherPyramids = matchingPyramids.filter(item => !item.text.toLocaleLowerCase('tr-TR').includes(focusChar));
+        currentQueue = [...focusPyramids, ...otherPyramids];
       }
 
       currentIndex = 0;
@@ -1381,10 +1603,15 @@
       document.getElementById('cardRetryBadge').style.display = (currentItem.isRetry) ? 'block' : 'none';
 
       const badgeElem = document.getElementById('newLetterBadge');
-      if (lower.includes('o') && activeLetters.has('o')) {
+      const focusChar = getActiveFocusLetter();
+      if (lower.includes(focusChar) && activeLetters.has(focusChar) && focusChar !== 'a') {
         badgeElem.style.display = 'inline-flex';
         document.getElementById('badgeIcon').textContent = '🌱';
-        document.getElementById('badgeText').innerHTML = 'Yeni Harf Pratiği: <strong>O</strong>';
+        document.getElementById('badgeText').innerHTML = 'Yeni Harf Pratiği: <strong>' + focusChar.toLocaleUpperCase('tr-TR') + '</strong>';
+      } else if (lower.includes('o') && activeLetters.has('o')) {
+        badgeElem.style.display = 'inline-flex';
+        document.getElementById('badgeIcon').textContent = '🌱';
+        document.getElementById('badgeText').innerHTML = 'Harf Pratiği: <strong>O</strong>';
       } else if (lower.includes('l') && activeLetters.has('l')) {
         badgeElem.style.display = 'inline-flex';
         document.getElementById('badgeIcon').textContent = '⭐';
@@ -1621,25 +1848,48 @@
     function renderTrayTiles() {
       const container = document.getElementById('activeTrayLetters');
       container.innerHTML = '';
-      Array.from(activeLetters).sort().forEach(letter => {
+      const focusChar = getActiveFocusLetter();
+
+      // Harfleri müfredat sırasına göre diz
+      const sorted = Array.from(activeLetters).sort((a, b) => {
+        const ia = CURRICULUM_ORDER.indexOf(a);
+        const ib = CURRICULUM_ORDER.indexOf(b);
+        if (ia !== -1 && ib !== -1) return ia - ib;
+        if (ia !== -1) return -1;
+        if (ib !== -1) return 1;
+        return a.localeCompare(b, 'tr');
+      });
+
+      sorted.forEach(letter => {
         const tile = document.createElement('div');
-        const isNewO = (letter === 'o');
-        const isL = (letter === 'l');
-        tile.className = `letter-tile ${isNewO ? 'new-highlight' : (isL ? 'highlight' : '')}`;
+        const isFocus = (letter === focusChar);
+        const isSpecial = ['o', 'k', 'u', 'r', 'ı', 'm', 'ü'].includes(letter);
+        tile.className = `letter-tile ${isFocus ? 'new-highlight' : (isSpecial ? 'highlight' : '')}`;
         tile.textContent = letter.toLocaleUpperCase('tr-TR');
-        tile.title = isNewO ? 'Yeni Harf: O' : '';
+        tile.title = isFocus ? `Yeni Harf: ${letter.toLocaleUpperCase('tr-TR')}` : '';
         container.appendChild(tile);
       });
 
       const label = document.getElementById('trayTitleLabel');
       const iconHtml = `<img src="icon.png" alt="" style="height: 20px; width: auto; vertical-align: -3px; margin-right: 4px;">`;
-      if (activeLetters.has('o')) {
-        label.innerHTML = `${iconHtml}Tepsideki Harfler (Yeni: O):`;
-      } else if (activeLetters.has('l')) {
-        label.innerHTML = `${iconHtml}Tepsideki Harfler (Yeni: L):`;
-      } else {
-        label.innerHTML = `${iconHtml}Tepsideki Harfler:`;
+      label.innerHTML = `${iconHtml}Tepsideki Harfler (Yeni: ${focusChar.toLocaleUpperCase('tr-TR')}):`;
+    }
+
+    function setLetterPreset(preset) {
+      if (preset === 'aneto') {
+        activeLetters = new Set(['a', 'n', 'e', 't', 'i', 'l', 'o']);
+        showToast("Tepsi 1. Grup + O (ANETİLO) harflerine ayarlandı! 👍");
+      } else if (preset === 'kurim') {
+        activeLetters = new Set(['a', 'n', 'e', 't', 'i', 'l', 'o', 'k', 'u', 'r', 'ı', 'm']);
+        showToast("2. Grup (OKURIM) harfleri tepsiye eklendi! 🚀");
+      } else if (preset === 'six_new') {
+        activeLetters = new Set(['a', 'n', 'e', 't', 'i', 'l', 'o', 'k', 'u', 'r', 'ı', 'm', 'ü']);
+        showToast("6 yeni harf (+K, U, R, I, M, Ü) tepsiye eklendi! ✨");
       }
+      renderAlphabetGrid();
+      renderTrayTiles();
+      buildQueue();
+      showCurrentWord();
     }
 
     function openLetterModal() {
@@ -1826,7 +2076,7 @@
     }
 
     /* GitHub Auto-Update Checker */
-    const CURRENT_VERSION = 'v1.0.4';
+    const CURRENT_VERSION = 'v1.0.5';
     const GITHUB_REPO = 'lyldz/Harf-Tepsisi';
     let latestReleaseData = null;
 
@@ -1888,15 +2138,60 @@
       }
     }
 
+    // Android Native Bridge İndirme Geri Bildirimleri (Tam Vakti Deneyimi)
+    window.onUpdateDownloadProgress = function(percent, statusText) {
+      const area = document.getElementById('modalUpdateProgressArea');
+      const bar = document.getElementById('modalUpdateProgressBar');
+      const status = document.getElementById('modalUpdateProgressStatus');
+      const btn = document.getElementById('modalBtnStartUpdate');
+      if (area) area.style.display = 'block';
+      if (bar) bar.style.width = percent + '%';
+      if (status) status.textContent = statusText || ('İndiriliyor... %' + percent);
+      if (percent >= 100) {
+        if (btn) btn.innerHTML = '<span>📦</span><span>Paket Yükleyici Başlatılıyor...</span>';
+      }
+    };
+
+    window.onUpdateDownloadError = function(errMsg) {
+      showToast('Güncelleme hatası: ' + errMsg);
+      const btn = document.getElementById('modalBtnStartUpdate');
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<span>⚡ Tekrar Dene 🚀</span>';
+      }
+    };
+
     function downloadLatestApk() {
-      if (latestReleaseData && latestReleaseData.assets && latestReleaseData.assets.length > 0) {
-        const apkAsset = latestReleaseData.assets.find(a => a.name && a.name.endsWith('.apk')) || latestReleaseData.assets[0];
+      if (!latestReleaseData) return;
+      const btn = document.getElementById('modalBtnStartUpdate');
+      const area = document.getElementById('modalUpdateProgressArea');
+      if (area) area.style.display = 'block';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span>⏳ İndirme Başlatılıyor...</span>';
+      }
+
+      let apkUrl = latestReleaseData.html_url;
+      if (latestReleaseData.assets && latestReleaseData.assets.length > 0) {
+        const apkAsset = latestReleaseData.assets.find(a => a.name && a.name.endsWith('.apk') && !a.name.includes('-v1.0.0')) || latestReleaseData.assets.find(a => a.name && a.name.endsWith('.apk'));
         if (apkAsset && apkAsset.browser_download_url) {
-          window.location.href = apkAsset.browser_download_url;
-          return;
+          apkUrl = apkAsset.browser_download_url;
         }
       }
-      window.location.href = `https://github.com/${GITHUB_REPO}/releases/latest`;
+
+      // Android Native Bridge varsa doğrudan arka planda indirip FileProvider ile kur
+      if (window.AndroidBridge && window.AndroidBridge.downloadAndInstallApk) {
+        window.AndroidBridge.downloadAndInstallApk(apkUrl);
+      } else {
+        // Tarayıcı indirmesi
+        window.location.href = apkUrl;
+        setTimeout(() => {
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '<span>📲 Yeni APK\'yı İndir ve Kur</span>';
+          }
+        }, 2000);
+      }
     }
 
     // Bootstrap

@@ -4,35 +4,41 @@
 
 ---
 
-## 🚀 Özellikler
+## 🚀 Özellikler (v1.0.5)
 
-- **Müfredat:** 2024 MEB Ses Grubu: **A - N - E - T - İ - L** (ANETİL).
+- **Müfredat Uyumu (MEB 2024 Türkiye Yüzyılı Maarif Modeli):**
+  - **1. Grup:** `A - N - E - T - İ - L` (ANETİL)
+  - **2. Grup:** `O - K - U - R - I - M` (OKURIM)
+  - **3. Grup:** `Ü - S ...`
+  - Varsayılan olarak **O** harfine kadar olan küme aktiftir (`A, N, E, T, İ, L, O`). İstenildiği an tek dokunuşla **K, U, R, I, M, Ü** harfleri aktif edilip egzersizlere dahil edilebilir.
 - **10 Saniyelik Akıllı Sayaç:** Çocukların okuma hızını artırmak ve motive etmek için renkli geri sayım sayacı.
 - **Aralıklı Tekrar (Spaced Repetition):** 10 saniye içinde okunmayan kelimeler silinmez, 3-4 kelime sonra tekrar ekrana gelerek pekiştirilir.
-- **Büyük Punto & Heceleme:** Ekranın tam ortasında büyük punto ve istenirse tek dokunuşla renkli heceleme (`an - ne`, `e - la`, `at - let`).
+- **Büyük Punto & Renkli Heceleme:** Ekranın tam ortasında büyük punto ve istenirse tek dokunuşla renkli heceleme (`ka - le`, `o - kul`, `el - ma`).
 - **Sesli Okuma (TTS):** Takıldığı kelimeleri dinleyebilmesi için Türkçe sesli okuma desteği.
-- **Hızlı Okuma Piramitleri:** Çalışma yapraklarındaki piramit cümle okumaları (*Ela al*, *Talat tatili anlat*, *İnan attan in* vb.).
+- **Hızlı Okuma Piramitleri:** Çalışma yapraklarındaki piramit cümle okumaları (*Ela al*, *Talat tatili anlat*, *Kenan iki kale kur*, *Utku okula git*, *Rana tarak al* vb.).
 - **Yıldız & Konfeti Ödülü:** Her doğru okumada konfeti ve ses efekti ile motivasyon artırıcı yıldız sistemi.
+- **📲 Uygulama İçi Canlı Güncelleme (Tam Vakti Deneyimi):**
+  - Uygulama her açılışında arka planda GitHub üzerinden güncellemeleri sessizce denetler.
+  - Yeni sürüm çıktığında eğlenceli **"🎉 MÜJDE ÖMER ASAF! 🚀"** kutlama penceresi açılır.
+  - Uygulama içinden canlı yüzde çubuğuyla (`%0` - `%100`) doğrudan indirilip Android paket yükleyicisiyle tek tıkla kurulabilir.
 
 ---
 
-## 🔤 Yeni Harf Nasıl Eklenir?
+## 🔤 Tepsideki Harfleri Değiştirme
 
-Ömer Asaf yeni harfler öğrendikçe (örn. *O, K, U, R, I, M, S* vb.):
-1. `index.html` dosyasındaki `activeLetters` kümesine yeni harfi ekleyin:
-   ```javascript
-   let activeLetters = new Set(['a', 'n', 'e', 't', 'i', 'l', 'yeni_harf']);
-   ```
-2. `MASTER_DICTIONARY` dizisine yeni harfle yapılabilecek anlamlı kelimeleri heceleriyle ekleyin.
-3. Değişiklikleri GitHub'a gönderin (push).
+Uygulama içerisindeki **"✏️ Harf Seç"** butonuna basarak:
+- **📘 ANETİLO (Varsayılan):** Sadece O harfine kadar olan kelimeler
+- **🚀 2. Grup (+K, U, R, I, M):** 2. grup harfleriyle türetilen zengin kelimeler
+- **✨ 6 Yeni Harf (+K, U, R, I, M, Ü):** Maarif modelinin 6 yeni harfini kapsayan tam pratik
+- İstenilen harfler harf tablosundan tek tek açılıp kapatılabilir.
 
 ---
 
 ## 📦 Otomatik APK Üretimi (GitHub Actions)
 
 Bu depoda GitHub Actions entegrasyonu mevcuttur:
-1. Depoya her `push` yapıldığında veya **Actions** sekmesinden **Run workflow** dendiğinde GitHub sunucuları otomatik olarak Android APK'sını derler.
-2. Derlenen APK, **Actions > En son işlem > Artifacts** bölümünden doğrudan Android telefonunuza indirilip kurulabilir (`HarfTepsisi-OmerAsaf.apk`).
+1. Depoya her `push` yapıldığında veya `v*` etiketi yayınlandığında GitHub sunucuları otomatik olarak Android APK'sını derler.
+2. Derlenen APK, **Releases** bölümünden ve uygulama içindeki canlı güncelleme sistemi üzerinden doğrudan telefona kurulabilir (`HarfTepsisi-OmerAsaf-v1.0.5.apk`).
 
 ---
 

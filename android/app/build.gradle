@@ -10,8 +10,8 @@ android {
         applicationId "com.omerasaf.harftepsisi"
         minSdk 21
         targetSdk 34
-        versionCode 5
-        versionName "1.0.4"
+        versionCode 6
+        versionName "1.0.5"
     }
 
     buildTypes {
@@ -32,5 +32,5 @@ android {
 }
 
 dependencies {
-    // Native Android WebView
+    implementation 'androidx.core:core:1.12.0'
 }

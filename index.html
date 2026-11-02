@@ -10,7 +10,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>Harf Tepsisi (v1.0.5) - Ömer Asaf</title>
+  <title>Harf Tepsisi (v1.0.6) - Ömer Asaf</title>
   <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
   <link rel="apple-touch-icon" href="icon-192.png">
@@ -698,7 +698,7 @@
 
   <!-- Live Version Notification Bar -->
   <div style="background:#0284c7; color:white; font-size:12px; font-weight:800; padding:6px 14px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 4px rgba(0,0,0,0.1); flex-wrap:wrap; gap:6px;">
-    <span>🎨 <strong>v1.0.5:</strong> Müfredatın 6 Yeni Harfi (K, U, R, I, M, Ü) ve Otomatik Güncelleme Eklendi!</span>
+    <span>🎨 <strong>v1.0.6:</strong> Müfredatın 6 Yeni Harfi (K, U, R, I, M, Ü) ve Otomatik Güncelleme Eklendi!</span>
     <div style="display:flex; gap:6px;">
       <button onclick="checkForGitHubUpdate(false)" style="background:#e0f2fe; color:#0369a1; border:none; padding:3px 8px; border-radius:999px; font-weight:800; font-size:11px; cursor:pointer;">
         Güncelleme Denetle 🔍
@@ -885,7 +885,7 @@
           <div style="background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:14px; padding:12px; display:flex; flex-direction:column; gap:8px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <span style="font-size:13px; font-weight:700;">Mevcut Sürüm:</span>
-              <strong style="color:#0284c7;" id="currentVersionLabel">v1.0.5</strong>
+              <strong style="color:#0284c7;" id="currentVersionLabel">v1.0.6</strong>
             </div>
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <span style="font-size:13px; font-weight:700;">Durum:</span>
@@ -932,7 +932,7 @@
       <div style="background:#f0fdf4; border:1.5px solid #86efac; border-radius:14px; padding:12px; margin:8px 0;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
           <span style="font-size:13px; font-weight:800; color:#166534;">Yeni Sürüm:</span>
-          <span class="pill" id="updateModalTag" style="background:#dcfce7; border-color:#86efac; color:#166534; font-size:13px; font-weight:900;">v1.0.5</span>
+          <span class="pill" id="updateModalTag" style="background:#dcfce7; border-color:#86efac; color:#166534; font-size:13px; font-weight:900;">v1.0.6</span>
         </div>
         <div id="updateModalNotes" style="font-size:12.5px; color:#1e293b; line-height:1.45; max-height:160px; overflow-y:auto; white-space:pre-wrap;">Müfredattaki 6 yeni harf (K, U, R, I, M, Ü) ve çalışma yaprakları eklendi!</div>
       </div>
@@ -1784,13 +1784,25 @@
       if (!currentItem) return;
 
       const raw = (appMode === 'words') ? currentItem.word : currentItem.text;
-      const clean = raw.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+      const clean = raw.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").trim();
 
+      // 1. Android Native TTS (En Güvenilir & Cihaz Desteği Garantili)
+      if (window.AndroidBridge && window.AndroidBridge.speakText) {
+        window.AndroidBridge.speakText(clean);
+        return;
+      }
+
+      // 2. Web Speech API (Tarayıcı / PWA Desteği)
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
         const utter = new SpeechSynthesisUtterance(clean);
         utter.lang = 'tr-TR';
         utter.rate = 0.82;
+        try {
+          const voices = window.speechSynthesis.getVoices();
+          const trVoice = voices.find(v => v.lang && v.lang.toLowerCase().includes('tr'));
+          if (trVoice) utter.voice = trVoice;
+        } catch(err) {}
         window.speechSynthesis.speak(utter);
       } else {
         showToast("Cihazınızda sesli okuma desteklenmiyor.");
@@ -2081,7 +2093,7 @@
     }
 
     /* GitHub Auto-Update Checker */
-    const CURRENT_VERSION = 'v1.0.5';
+    const CURRENT_VERSION = 'v1.0.6';
     const GITHUB_REPO = 'lyldz/Harf-Tepsisi';
     let latestReleaseData = null;
 

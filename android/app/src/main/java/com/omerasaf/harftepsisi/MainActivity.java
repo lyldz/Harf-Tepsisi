@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.Settings;
+import android.speech.tts.TextToSpeech;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.DownloadListener;
@@ -24,9 +25,12 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Locale;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements TextToSpeech.OnInitListener {
     private WebView mWebView;
+    private TextToSpeech mTTS;
+    private boolean mTTSReady = false;
 
     @Override
     @SuppressLint("SetJavaScriptEnabled")
@@ -37,6 +41,13 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        // Native TTS Başlatma
+        try {
+            mTTS = new TextToSpeech(this, this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         mWebView = new WebView(this);
         setContentView(mWebView);
@@ -88,11 +99,48 @@ public class MainActivity extends Activity {
         mWebView.loadUrl("file:///android_asset/index.html");
     }
 
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS && mTTS != null) {
+            try {
+                Locale trLocale = new Locale("tr", "TR");
+                int result = mTTS.setLanguage(trLocale);
+                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    mTTS.setLanguage(Locale.getDefault());
+                }
+                mTTS.setSpeechRate(0.82f);
+                mTTSReady = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public class WebAppInterface {
         private final Activity activity;
 
         public WebAppInterface(Activity activity) {
             this.activity = activity;
+        }
+
+        @JavascriptInterface
+        public void speakText(final String text) {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        if (mTTSReady && mTTS != null) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                mTTS.speak(text, TextToSpeech.QUEUE_FLUSH, null, "harf_tepsisi_utterance");
+                            } else {
+                                mTTS.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
 
         @JavascriptInterface
@@ -263,5 +311,16 @@ public class MainActivity extends Activity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mTTS != null) {
+            try {
+                mTTS.stop();
+                mTTS.shutdown();
+            } catch (Exception ignored) {}
+        }
+        super.onDestroy();
     }
 }

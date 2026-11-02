@@ -10,7 +10,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>Harf Tepsisi (v1.0.7) - Ömer Asaf</title>
+  <title>Harf Tepsisi (v1.0.8) - Ömer Asaf</title>
   <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
   <link rel="apple-touch-icon" href="icon-192.png">
@@ -55,7 +55,7 @@
     header {
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(8px);
-      padding: 12px 18px;
+      padding: 6px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -139,16 +139,18 @@
       color: #be123c;
     }
 
-    /* Main Container */
+    /* Main Container - Single Page Fit (No Scrolling Needed) */
     main {
       flex: 1;
-      max-width: 680px;
+      max-width: 600px;
       width: 100%;
       margin: 0 auto;
-      padding: 8px 12px 14px;
+      padding: 6px 12px 10px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      justify-content: space-between;
+      gap: 6px;
+      min-height: 0;
     }
 
     /* Mode & Settings Bar */
@@ -209,14 +211,14 @@
     /* Letter Tray (Harf Tepsisi) */
     .tray-card {
       background: #fffbeb;
-      border: 3px dashed #f59e0b;
-      border-radius: 18px;
-      padding: 10px 14px;
+      border: 2px dashed #f59e0b;
+      border-radius: 14px;
+      padding: 4px 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      box-shadow: 0 3px 6px rgba(245, 158, 11, 0.15);
+      gap: 8px;
+      box-shadow: 0 2px 4px rgba(245, 158, 11, 0.12);
     }
 
     .tray-info {
@@ -228,35 +230,37 @@
     }
     .tray-card button {
       flex-shrink: 0;
+      padding: 5px 10px;
+      font-size: 12px;
     }
 
     .tray-title {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 800;
       color: #b45309;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
     }
 
     .tray-tiles {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 4px;
     }
 
     .letter-tile {
-      width: 32px;
-      height: 34px;
+      width: 26px;
+      height: 28px;
       background: #ffffff;
-      border: 2px solid #fbbf24;
-      border-radius: 8px;
+      border: 1.5px solid #fbbf24;
+      border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      font-size: 15px;
       font-weight: 900;
       color: #b45309;
-      box-shadow: 0 2px 0 #d97706;
+      box-shadow: 0 1.5px 0 #d97706;
       transition: transform 0.15s ease;
     }
 
@@ -278,20 +282,20 @@
     /* Timer Section */
     .timer-wrap {
       background: white;
-      border-radius: 16px;
-      padding: 10px 16px;
-      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 4px 12px;
+      border: 1.5px solid #e2e8f0;
       box-shadow: var(--shadow-sm);
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 3px;
     }
 
     .timer-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 13px;
+      font-size: 11.5px;
       font-weight: 700;
       color: #475569;
     }
@@ -299,8 +303,8 @@
     .timer-clock {
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 18px;
+      gap: 4px;
+      font-size: 15px;
       font-weight: 900;
       color: #0284c7;
     }
@@ -340,16 +344,16 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 170px;
+      min-height: 140px;
     }
 
     .word-card {
       width: 100%;
       background: white;
-      border-radius: 24px;
-      border: 4px solid #38bdf8;
+      border-radius: 20px;
+      border: 3.5px solid #38bdf8;
       box-shadow: var(--shadow-lg);
-      padding: 18px 14px;
+      padding: 14px 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -416,13 +420,13 @@
 
     /* Giant Word Display */
     .word-text {
-      font-size: 58px;
+      font-size: clamp(38px, 11vw, 56px);
       font-weight: 900;
       color: #0f172a;
       text-align: center;
-      line-height: 1.25;
-      letter-spacing: 1.5px;
-      margin: 14px 0;
+      line-height: 1.2;
+      letter-spacing: 1px;
+      margin: 6px 0;
       word-break: break-word;
       transition: font-size 0.2s ease;
     }
@@ -493,11 +497,12 @@
       color: #1d4ed8;
     }
 
-    /* Giant Primary Action Button */
+    /* Primary Action Buttons - Always Visible on Screen */
     .action-row {
       display: flex;
-      gap: 12px;
+      gap: 8px;
       width: 100%;
+      margin-top: 2px;
     }
 
     .btn-read {
@@ -505,31 +510,31 @@
       background: linear-gradient(180deg, #22c55e, #16a34a);
       border: none;
       color: white;
-      font-size: 22px;
+      font-size: 19px;
       font-weight: 900;
-      padding: 16px 20px;
-      border-radius: 20px;
-      box-shadow: 0 6px 0 #15803d, 0 10px 20px rgba(22, 163, 74, 0.3);
+      padding: 13px 16px;
+      border-radius: 16px;
+      box-shadow: 0 4px 0 #15803d, 0 8px 16px rgba(22, 163, 74, 0.25);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
       transition: transform 0.1s ease, box-shadow 0.1s ease;
     }
 
     .btn-read:active {
-      transform: translateY(4px);
-      box-shadow: 0 2px 0 #15803d, 0 4px 10px rgba(22, 163, 74, 0.2);
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #15803d, 0 3px 8px rgba(22, 163, 74, 0.2);
     }
 
     .btn-audio {
-      width: 64px;
-      height: 64px;
+      width: 52px;
+      height: 52px;
       background: #f1f5f9;
       border: 2px solid #cbd5e1;
-      border-radius: 20px;
-      font-size: 26px;
+      border-radius: 16px;
+      font-size: 22px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -874,7 +879,7 @@
           <div style="background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:14px; padding:12px; display:flex; flex-direction:column; gap:8px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <span style="font-size:13px; font-weight:700;">Mevcut Sürüm:</span>
-              <strong style="color:#0284c7;" id="currentVersionLabel">v1.0.7</strong>
+              <strong style="color:#0284c7;" id="currentVersionLabel">v1.0.8</strong>
             </div>
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <span style="font-size:13px; font-weight:700;">Durum:</span>
@@ -921,7 +926,7 @@
       <div style="background:#f0fdf4; border:1.5px solid #86efac; border-radius:14px; padding:12px; margin:8px 0;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
           <span style="font-size:13px; font-weight:800; color:#166534;">Yeni Sürüm:</span>
-          <span class="pill" id="updateModalTag" style="background:#dcfce7; border-color:#86efac; color:#166534; font-size:13px; font-weight:900;">v1.0.7</span>
+          <span class="pill" id="updateModalTag" style="background:#dcfce7; border-color:#86efac; color:#166534; font-size:13px; font-weight:900;">v1.0.8</span>
         </div>
         <div id="updateModalNotes" style="font-size:12.5px; color:#1e293b; line-height:1.45; max-height:160px; overflow-y:auto; white-space:pre-wrap;">Müfredattaki 6 yeni harf (K, U, R, I, M, Ü) ve çalışma yaprakları eklendi!</div>
       </div>
@@ -2082,7 +2087,7 @@
     }
 
     /* GitHub Auto-Update Checker */
-    const CURRENT_VERSION = 'v1.0.7';
+    const CURRENT_VERSION = 'v1.0.8';
     const GITHUB_REPO = 'lyldz/Harf-Tepsisi';
     let latestReleaseData = null;
 

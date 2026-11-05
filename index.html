@@ -15,6 +15,10 @@
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
   <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="manifest" href="manifest.json?v=104">
+  <!-- Google Fonts: Lexend & Nunito Sans (Stitch Playful Dark Classroom) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-gradient-start: #e0f2fe;
@@ -42,7 +46,7 @@
     }
 
     body {
-      font-family: 'Comic Sans MS', 'Fredoka', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 'Nunito', sans-serif;
+      font-family: 'Lexend', 'Nunito Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
       color: var(--text-main);
       min-height: 100vh;
@@ -662,6 +666,126 @@
 
     .toast-popup.visible {
       transform: translateX(-50%) translateY(0);
+    }
+
+    /* Stitch "Playful Dark Classroom" Karanlık Mod Desteği */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-gradient-start: #0b1326;
+        --bg-gradient-end: #131b2e;
+        --tray-bg: #1e293b;
+        --tray-border: #38bdf8;
+        --card-bg: #171f33;
+        --primary: #38bdf8;
+        --primary-hover: #0284c7;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --text-main: #dae2fd;
+        --text-muted: #94a3b8;
+        --shadow-sm: 0 4px 12px rgba(0,0,0,0.3);
+        --shadow-lg: 0 14px 28px rgba(0,0,0,0.5);
+      }
+
+      body {
+        background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.12) 0%, transparent 60%),
+                    radial-gradient(circle at 100% 100%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
+                    #0b1326 !important;
+        color: var(--text-main) !important;
+      }
+
+      header {
+        background: rgba(19, 27, 46, 0.9) !important;
+        border-bottom-color: rgba(56, 189, 248, 0.2) !important;
+      }
+
+      .brand-title {
+        color: #38bdf8 !important;
+      }
+
+      .stat-pill {
+        background: #1e293b !important;
+        border-color: rgba(56, 189, 248, 0.2) !important;
+        color: #dae2fd !important;
+      }
+
+      .tray-card {
+        background: #171f33 !important;
+        border-color: rgba(56, 189, 248, 0.35) !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+      }
+
+      .tray-title {
+        color: #38bdf8 !important;
+      }
+
+      .tray-tile {
+        background: #1e293b !important;
+        color: #38bdf8 !important;
+        border: 2px solid #334155 !important;
+        box-shadow: 0 3px 0 #0f172a !important;
+      }
+
+      .word-card {
+        background: #1e293b !important;
+        border: 2px solid rgba(56, 189, 248, 0.25) !important;
+        box-shadow: 0 0 32px -4px rgba(56, 189, 248, 0.15) !important;
+      }
+
+      .word-text {
+        color: #ffffff !important;
+      }
+
+      .mode-tab {
+        background: #1e293b !important;
+        color: #94a3b8 !important;
+      }
+      .mode-tab.active {
+        background: #38bdf8 !important;
+        color: #0b1326 !important;
+        font-weight: 800 !important;
+      }
+
+      .helper-chip {
+        background: #1e293b !important;
+        color: #cbd5e1 !important;
+        border-color: #334155 !important;
+      }
+
+      .modal-card {
+        background: #171f33 !important;
+        color: #dae2fd !important;
+        border: 1.5px solid rgba(56, 189, 248, 0.25) !important;
+      }
+
+      .letter-select-btn {
+        background: #1e293b !important;
+        color: #94a3b8 !important;
+        border-color: #334155 !important;
+      }
+      .letter-select-btn.active {
+        background: #38bdf8 !important;
+        color: #0b1326 !important;
+        border-color: #0284c7 !important;
+      }
+
+      .timer-wrap {
+        background: #171f33 !important;
+        border: 1.5px solid rgba(56, 189, 248, 0.2) !important;
+      }
+
+      .pyramid-card {
+        background: #171f33 !important;
+        border-color: rgba(56, 189, 248, 0.2) !important;
+      }
+      .pyramid-line {
+        color: #94a3b8 !important;
+      }
+      .pyramid-line.active {
+        background: rgba(56, 189, 248, 0.18) !important;
+        color: #38bdf8 !important;
+        border-color: #38bdf8 !important;
+      }
     }
   </style>
 </head>

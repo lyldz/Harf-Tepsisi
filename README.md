@@ -4,7 +4,7 @@
 
 ---
 
-## 🚀 Özellikler (v1.0.5)
+## 🚀 Özellikler (v1.0.9)
 
 - **Müfredat Uyumu (MEB 2024 Türkiye Yüzyılı Maarif Modeli):**
   - **1. Grup:** `A - N - E - T - İ - L` (ANETİL)
@@ -38,7 +38,7 @@ Uygulama içerisindeki **"✏️ Harf Seç"** butonuna basarak:
 
 Bu depoda GitHub Actions entegrasyonu mevcuttur:
 1. Depoya her `push` yapıldığında veya `v*` etiketi yayınlandığında GitHub sunucuları otomatik olarak Android APK'sını derler.
-2. Derlenen APK, **Releases** bölümünden ve uygulama içindeki canlı güncelleme sistemi üzerinden doğrudan telefona kurulabilir (`HarfTepsisi-OmerAsaf-v1.0.5.apk`).
+2. Derlenen APK, **Releases** bölümünden ve uygulama içindeki canlı güncelleme sistemi üzerinden doğrudan telefona kurulabilir (`HarfTepsisi-OmerAsaf-v1.0.9.apk`).
 
 ---
 

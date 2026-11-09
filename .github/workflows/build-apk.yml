@@ -36,6 +36,7 @@ jobs:
           cp index.html android/app/src/main/assets/
           cp manifest.json android/app/src/main/assets/
           cp sw.js android/app/src/main/assets/
+          cp -r fonts android/app/src/main/assets/
           cp logo.png android/app/src/main/assets/ 2>/dev/null || true
           cp icon*.png android/app/src/main/assets/ 2>/dev/null || true
 
